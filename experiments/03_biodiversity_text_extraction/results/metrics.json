@@ -1,0 +1,92 @@
+{
+  "experiment": "03_biodiversity_text_extraction",
+  "n_comments": 400,
+  "seed": 0,
+  "relations": [
+    "pollinates",
+    "feeds_on",
+    "parasitizes",
+    "competes_with",
+    "depends_on"
+  ],
+  "n_species_vocab": 14,
+  "n_gold_triple_types": 10,
+  "before": {
+    "tp": 28,
+    "fp": 14,
+    "fn": 240,
+    "n_predicted": 42,
+    "precision": 0.6667,
+    "recall": 0.1045,
+    "f1": 0.1806,
+    "invalid_triples": 0
+  },
+  "after": {
+    "tp": 268,
+    "fp": 0,
+    "fn": 0,
+    "n_predicted": 268,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "invalid_triples": 0
+  },
+  "after_graph": {
+    "nodes": 14,
+    "edges": 10,
+    "triples": [
+      [
+        "hummingbird",
+        "competes_with",
+        "stingless bee"
+      ],
+      [
+        "hummingbird",
+        "pollinates",
+        "agave"
+      ],
+      [
+        "jaguar",
+        "feeds_on",
+        "white-tailed deer"
+      ],
+      [
+        "leafcutter ant",
+        "depends_on",
+        "fungus"
+      ],
+      [
+        "leafcutter ant",
+        "feeds_on",
+        "blue oak"
+      ],
+      [
+        "long-nosed bat",
+        "pollinates",
+        "agave"
+      ],
+      [
+        "monarch butterfly",
+        "depends_on",
+        "milkweed"
+      ],
+      [
+        "monarch butterfly",
+        "depends_on",
+        "oyamel fir"
+      ],
+      [
+        "stingless bee",
+        "pollinates",
+        "coffee shrub"
+      ],
+      [
+        "white-tailed deer",
+        "feeds_on",
+        "cloud-forest orchid"
+      ]
+    ]
+  },
+  "recall_gap_after_minus_before": 0.8955,
+  "f1_gap_after_minus_before": 0.8194
+}
