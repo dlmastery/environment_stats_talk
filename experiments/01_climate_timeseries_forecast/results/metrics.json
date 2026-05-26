@@ -1,0 +1,61 @@
+{
+  "experiment": "01_climate_timeseries_forecast",
+  "config": {
+    "n_years": 4,
+    "horizons": [
+      1
+    ],
+    "quick": true,
+    "seed": 0,
+    "after_cfg": {
+      "lookback": 14,
+      "horizon": 1,
+      "hidden": 24,
+      "num_layers": 1,
+      "lr": 0.003,
+      "batch_size": 64,
+      "epochs": 3,
+      "patience": 2
+    },
+    "device": "cuda",
+    "n_train": 1021,
+    "n_val": 220,
+    "n_test": 219
+  },
+  "horizons": {
+    "1": {
+      "before": {
+        "persistence": {
+          "rmse": 1.9732519109590645,
+          "mae": 1.5555047620517275,
+          "acc": 0.9617732822265017
+        },
+        "seasonal_naive": {
+          "rmse": 13.330223569020118,
+          "mae": 11.556576408989505,
+          "acc": -0.34809514195722924
+        }
+      },
+      "after": {
+        "rmse": 2.810562505537135,
+        "mae": 2.207073713464911,
+        "acc": 0.9204088569811402,
+        "epochs_run": 3,
+        "device": "cuda",
+        "best_val_rmse_z": 0.38113370537757874
+      },
+      "skill_score_after_vs_persistence": -0.4243303097421989,
+      "n_eval_targets": 219,
+      "foundation_zero_shot": {
+        "status": "skipped",
+        "reason": "Chronos/TimesFM not installed or disabled - see after/dl_forecaster.zero_shot_foundation_baseline."
+      }
+    }
+  },
+  "wall_time_sec": {
+    "1": {
+      "before": 0.002,
+      "after": 10.414
+    }
+  }
+}
