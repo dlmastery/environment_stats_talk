@@ -1,0 +1,22 @@
+# Core scientific stack (verified present in dev env: Python 3.12, CUDA 12.4 / RTX 4090)
+numpy>=1.26
+pandas>=2.0
+scikit-learn>=1.3
+scipy>=1.11
+statsmodels>=0.14
+matplotlib>=3.7
+pyyaml>=6.0
+networkx>=3.0
+
+# Deep learning (GPU experiments; CPU fallback works for smoke tests)
+torch>=2.2            # install the CUDA build matching your GPU for 4090 runs
+
+# Optional — only needed for the documented "real data" / "foundation model" variants.
+# The committed results do NOT require these; synthetic+small-data paths run without them.
+# xarray>=2024.0      # ERA5 / NetCDF handling
+# cdsapi>=0.7         # Copernicus Climate Data Store (ERA5) downloads
+# rasterio>=1.3       # GeoTIFF / Sentinel-2 raster IO
+# sentinelhub>=3.10   # Sentinel-2 access
+# pygbif>=0.6         # GBIF species occurrence API
+# anthropic>=0.40     # real-LLM extraction variant (Exp03) — needs ANTHROPIC_API_KEY
+# chronos-forecasting # foundation TS model (Exp01 zero-shot variant)
