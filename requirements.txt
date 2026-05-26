@@ -3,8 +3,8 @@ numpy>=1.26
 pandas>=2.0
 scikit-learn>=1.3
 scipy>=1.11
-statsmodels>=0.14
-matplotlib>=3.7
+statsmodels>=0.14.4   # <0.14.4 has a numpy-2.x ABI break (statespace/SARIMAX fails)
+matplotlib>=3.9       # <3.9 has a numpy-2.x ABI break (matplotlib._path fails)
 pyyaml>=6.0
 networkx>=3.0
 
