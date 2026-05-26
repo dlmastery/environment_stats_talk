@@ -1,0 +1,163 @@
+# Env-Stats SOTA Catalog — backbones / baselines for the autoresearch citation gate
+#
+# This is the env-stats analogue of the source framework's `templates/sota_catalog.yaml`.
+# The citation gate in `reasoning.py` is "seeded" by this file: when Claude proposes
+# an experiment, the pre-run reasoning must cite a real reference, and these entries
+# are the vetted menu it draws from.
+#
+# RULES (same as the source repo):
+#   - Every entry carries a FULL citation (authors / year / venue / 'Title' / arXiv / note).
+#   - Verifiable references only. Do NOT invent stats, dates, or papers.
+#   - arXiv IDs below are the anchors recorded in this repo's CLAUDE.md §6 and
+#     ledgers/CITATIONS-TO-VERIFY.md. Confirm exact venue/date before quoting on a slide.
+#
+# Credit: methodology adapted from dlmastery/autoresearch (generalized_ml_autoresearch).
+
+tier1_classical_baselines:
+  forecasting:
+    - backbone: persistence
+      trains: instant
+      citation: >
+        Hyndman & Athanasopoulos 2021 'Forecasting: Principles and Practice' (3rd ed.,
+        OTexts) — the random-walk / naive forecast is the canonical skill reference;
+        every model's headline number is reported as skill-vs-persistence because a
+        forecast that cannot beat 'tomorrow = today' has no operational value.
+      role: skill-score reference (denominator of skill_vs_persistence).
+
+    - backbone: seasonal_naive
+      trains: instant
+      citation: >
+        Hyndman & Athanasopoulos 2021 'Forecasting: Principles and Practice' (3rd ed.,
+        OTexts) — carries the value one seasonal period (365 d) earlier; a free,
+        strong floor whenever the annual cycle dominates, so it must be beaten before
+        any neural model is credited with 'learning seasonality'.
+
+    - backbone: arima
+      trains: cpu-seconds
+      citation: >
+        Box, Jenkins, Reinsel & Ljung 2015 'Time Series Analysis: Forecasting and
+        Control' (5th ed., Wiley) — the classical statistical floor for univariate
+        environmental series; interpretable, uncertainty-quantified, and the model an
+        environmetrician reaches for before any deep net.
+
+  trend_and_extremes:
+    - backbone: mann_kendall_sen
+      trains: instant
+      citation: >
+        Mann 1945 Econometrica 'Nonparametric tests against trend' and Sen 1968
+        JASA 'Estimates of the regression coefficient based on Kendall's tau' —
+        the nonparametric trend test + slope estimator that is the env-stats standard
+        for detecting monotonic warming/drying without a Gaussian assumption.
+
+    - backbone: gev_pot
+      trains: cpu-seconds
+      citation: >
+        Coles 2001 'An Introduction to Statistical Modeling of Extreme Values'
+        (Springer) — GEV (block maxima) and peaks-over-threshold/GPD; the reference
+        framework for return levels of heat and precipitation extremes.
+
+tier2_neural_baselines:
+  forecasting:
+    - backbone: mlp
+      epochs: 300
+      lr: 0.05
+      weight_decay: 1.0e-4
+      optimizer: full-batch GD (numpy) / AdamW (torch upgrade)
+      citation: >
+        Gardner & Dorling 1998 'Atmospheric Environment' "Artificial neural networks
+        (the multilayer perceptron)—a review of applications in the atmospheric
+        sciences" — establishes the MLP on lag/seasonal features as the simplest
+        neural baseline in the atmospheric sciences; we use a 1-hidden-layer MLP as
+        the runs-anywhere CPU default.
+
+    - backbone: lstm
+      epochs: 100
+      patience: 15
+      lr: 1.0e-3
+      optimizer: AdamW
+      citation: >
+        Hochreiter & Schmidhuber 1997 Neural Computation 'Long Short-Term Memory' —
+        the recurrent baseline for autoregressive environmental series; the 4090
+        upgrade path from the numpy MLP, motivated by longer-memory weather
+        persistence than a 7-lag window can capture.
+
+tier3_foundation_and_llm_2024_2026:
+  zero_shot_timeseries:
+    - backbone: timesfm
+      mode: zero-shot or head-only fine-tune
+      params_approx: 200M-500M
+      citation: >
+        Das, Kong, Sen & Zhou 2024 ICML 'A Decoder-Only Foundation Model for
+        Time-Series Forecasting' (arXiv:2310.10688) — a pretrained TS foundation
+        model; motivates a zero-shot baseline that needs no per-station training, the
+        '100x faster' AFTER story for environmental forecasting on a 4090.
+
+    - backbone: chronos
+      mode: zero-shot
+      params_approx: 9M-205M
+      citation: >
+        Ansari, Stella, Turkmen, Zhang, Mercado, Shen, Shchur, Rangapuram, Pineda
+        Arango, Kapoor, Zschiegner, Maddix, Mahoney, Torkkola, Wilson,
+        Bohlke-Schneider & Wang 2024 TMLR 'Chronos: Learning the Language of Time
+        Series' (arXiv:2403.07815) — tokenizes values and forecasts with a language
+        model; a strong zero-shot probe and an uncertainty-aware reference.
+
+    - backbone: moment
+      mode: zero-shot / linear-probe
+      params_approx: 40M-385M
+      citation: >
+        Goswami, Szafer, Choudhry, Cai, Li & Dubrawski 2024 ICML 'MOMENT: A Family of
+        Open Time-series Foundation Models' (arXiv:2402.03885) — general-purpose TS
+        embeddings; motivates a representation-only baseline for forecasting and
+        anomaly detection on environmental series.
+
+  climate_llm_and_agents:
+    - backbone: climatellm_style
+      role: text/forecast bridge
+      citation: >
+        'ClimateLLM: Efficient Frequency-Aware Large Language Models for Climate
+        Projection' (arXiv:2502.11059, 2025) — a climate-specific LLM approach;
+        motivates an AFTER experiment that conditions forecasts on textual/regime
+        context. Confirm exact venue/date before quoting (see CITATIONS-TO-VERIFY.md).
+
+    - backbone: cllmate_style
+      role: multimodal weather/event modeling
+      citation: >
+        'CLLMate: A Multimodal Benchmark for Weather and Climate Events Forecasting'
+        (arXiv:2409.19058, 2024) — multimodal weather/event forecasting benchmark;
+        motivates an event-aware evaluation track. Confirm venue/date before quoting.
+
+    - backbone: ai_co_scientist
+      role: hypothesis generation (the loop itself)
+      citation: >
+        'Towards an AI Co-Scientist' (arXiv:2502.18864, 2025) — an agentic
+        hypothesis-generation system; the conceptual anchor for using an LLM as the
+        OUTER research loop (Diagnose -> Cite -> Hypothesize). Confirm venue/date.
+
+    - backbone: ai_scientist_v2
+      role: end-to-end automated research
+      citation: >
+        'The AI Scientist-v2: Workshop-Level Automated Scientific Discovery via
+        Agentic Tree Search' (arXiv:2504.08066, 2025) — automated experiment->paper
+        pipeline; the comparator for what a fully-autonomous loop can produce.
+        Confirm venue/date before quoting.
+
+    - backbone: eaglevision
+      role: remote-sensing / vision baseline
+      citation: >
+        'EagleVision' (arXiv:2503.23330, 2025) — a remote-sensing vision model;
+        motivates the after-track for the satellite/land-cover experiments. Confirm
+        exact title/venue/date before quoting (see CITATIONS-TO-VERIFY.md).
+
+# Composite-metric defaults the gate expects (mirrors the source 'min(val,test) − penalty·n_below'):
+composite_defaults:
+  forecasting_error:        # lat_weighted_rmse / rmse / mae
+    primary_metric: lat_weighted_rmse
+    higher_is_better: false
+    penalty_weight: 0.5
+    below_threshold: -12.0   # oriented: a fold's RMSE worse than 12.0 deg C is penalised
+  forecasting_skill:        # acc / skill_vs_persistence
+    primary_metric: skill_vs_persistence
+    higher_is_better: true
+    penalty_weight: 0.1
+    below_threshold: 0.0     # a fold that does not beat persistence is penalised
