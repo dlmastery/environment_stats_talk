@@ -1,0 +1,66 @@
+{
+  "experiment": "04_remote_sensing_landcover",
+  "classes": [
+    "water",
+    "forest",
+    "cropland",
+    "urban",
+    "bare"
+  ],
+  "bands": [
+    "blue",
+    "green",
+    "red",
+    "nir",
+    "swir"
+  ],
+  "config": {
+    "epochs": 3,
+    "quick": true,
+    "n_train": 200,
+    "n_test": 100,
+    "n_change": 150,
+    "size": 12,
+    "seed": 0,
+    "rf_estimators": 80,
+    "device": "cpu"
+  },
+  "classification": {
+    "before_rf_indices": {
+      "model": "RandomForest-on-indices",
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "feature_importance": {
+        "NDVI": 0.11819696616010336,
+        "NDWI": 0.17422707697114953,
+        "mean_SWIR": 0.3466985700619984,
+        "brightness": 0.36087738680674886
+      }
+    },
+    "after_cnn_bands": {
+      "model": "SmallCNN-on-bands",
+      "device": "cpu",
+      "accuracy": 0.57,
+      "macro_f1": 0.46112288135593216,
+      "n_params": 24309,
+      "best_epoch": 2,
+      "epochs_run": 3
+    },
+    "delta": {
+      "accuracy": -0.43000000000000005,
+      "macro_f1": -0.5388771186440678
+    }
+  },
+  "change_detection": {
+    "model": "NDVI-difference change detection",
+    "threshold": 0.10301926732063293,
+    "accuracy": 1.0,
+    "macro_f1": 1.0,
+    "n": 150
+  },
+  "artifacts": {
+    "confusion_matrix": "confusion_matrix.png",
+    "change_map": "change_map.png",
+    "before_after_bars": "before_after_bars.png"
+  }
+}
