@@ -1,51 +1,124 @@
 {
   "experiment": "01_climate_timeseries_forecast",
   "config": {
-    "n_years": 4,
+    "n_years": 20,
     "horizons": [
-      1
+      1,
+      7,
+      14
     ],
-    "quick": true,
+    "quick": false,
     "seed": 0,
     "after_cfg": {
-      "lookback": 14,
+      "lookback": 30,
       "horizon": 1,
-      "hidden": 24,
+      "hidden": 48,
       "num_layers": 1,
       "lr": 0.003,
       "batch_size": 64,
-      "epochs": 3,
-      "patience": 2
+      "epochs": 80,
+      "patience": 6
     },
     "device": "cuda",
-    "n_train": 1021,
-    "n_val": 220,
-    "n_test": 219
+    "n_train": 5110,
+    "n_val": 1095,
+    "n_test": 1095
   },
   "horizons": {
     "1": {
       "before": {
         "persistence": {
-          "rmse": 1.9732519109590645,
-          "mae": 1.5555047620517275,
-          "acc": 0.9617732822265017
+          "rmse": 1.8761920669530685,
+          "mae": 1.4329696233546358,
+          "acc": 0.9630563608253915
         },
         "seasonal_naive": {
-          "rmse": 13.330223569020118,
-          "mae": 11.556576408989505,
-          "acc": -0.34809514195722924
+          "rmse": 3.712737667469738,
+          "mae": 3.01007975082693,
+          "acc": 0.853020393012828
+        },
+        "sarima": {
+          "rmse": 1.8258229084933697,
+          "mae": 1.4180712264996473,
+          "acc": 0.9644384138014934
         }
       },
       "after": {
-        "rmse": 2.810562505537135,
-        "mae": 2.207073713464911,
-        "acc": 0.9204088569811402,
-        "epochs_run": 3,
+        "rmse": 1.766506613276214,
+        "mae": 1.3781645484636162,
+        "acc": 0.9668074871906394,
+        "epochs_run": 31,
         "device": "cuda",
-        "best_val_rmse_z": 0.38113370537757874
+        "best_val_rmse_z": 0.28244948387145996
       },
-      "skill_score_after_vs_persistence": -0.4243303097421989,
-      "n_eval_targets": 219,
+      "skill_score_after_vs_persistence": 0.058461740463451095,
+      "n_eval_targets": 1095,
+      "foundation_zero_shot": {
+        "status": "skipped",
+        "reason": "Chronos/TimesFM not installed or disabled - see after/dl_forecaster.zero_shot_foundation_baseline."
+      }
+    },
+    "7": {
+      "before": {
+        "persistence": {
+          "rmse": 3.5804827327523645,
+          "mae": 2.8468825273741567,
+          "acc": 0.8652850305080019
+        },
+        "seasonal_naive": {
+          "rmse": 3.712737667469738,
+          "mae": 3.01007975082693,
+          "acc": 0.853020393012828
+        },
+        "sarima": {
+          "rmse": 2.054392040973731,
+          "mae": 1.6363475975320056,
+          "acc": 0.9547454940554975
+        }
+      },
+      "after": {
+        "rmse": 2.811136559934165,
+        "mae": 2.241272831652356,
+        "acc": 0.9136085413976222,
+        "epochs_run": 27,
+        "device": "cuda",
+        "best_val_rmse_z": 0.3856492042541504
+      },
+      "skill_score_after_vs_persistence": 0.21487219189228657,
+      "n_eval_targets": 1095,
+      "foundation_zero_shot": {
+        "status": "skipped",
+        "reason": "Chronos/TimesFM not installed or disabled - see after/dl_forecaster.zero_shot_foundation_baseline."
+      }
+    },
+    "14": {
+      "before": {
+        "persistence": {
+          "rmse": 4.307707649306766,
+          "mae": 3.4147062544073616,
+          "acc": 0.8055789786338384
+        },
+        "seasonal_naive": {
+          "rmse": 3.712737667469738,
+          "mae": 3.01007975082693,
+          "acc": 0.853020393012828
+        },
+        "sarima": {
+          "rmse": 2.095505866777333,
+          "mae": 1.66745515460949,
+          "acc": 0.9529422351892752
+        }
+      },
+      "after": {
+        "rmse": 2.9367571732278543,
+        "mae": 2.3349072105348285,
+        "acc": 0.9050943827299187,
+        "epochs_run": 7,
+        "device": "cuda",
+        "best_val_rmse_z": 0.39761218428611755
+      },
+      "skill_score_after_vs_persistence": 0.31825522706960374,
+      "n_eval_targets": 1095,
       "foundation_zero_shot": {
         "status": "skipped",
         "reason": "Chronos/TimesFM not installed or disabled - see after/dl_forecaster.zero_shot_foundation_baseline."
@@ -54,8 +127,16 @@
   },
   "wall_time_sec": {
     "1": {
-      "before": 0.002,
-      "after": 10.414
+      "before": 32.623,
+      "after": 39.201
+    },
+    "7": {
+      "before": 31.982,
+      "after": 21.966
+    },
+    "14": {
+      "before": 27.032,
+      "after": 3.125
     }
   }
 }
