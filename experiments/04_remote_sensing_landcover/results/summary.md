@@ -1,6 +1,6 @@
 # Experiment 04 — Land-cover classification + change detection
 
-_Config: device=cpu, epochs=3, quick=True, n_train=200, n_test=100, seed=0._
+_Config: device=cuda, epochs=40, quick=False, n_train=1500, n_test=500, seed=0._
 
 Classes: water, forest, cropland, urban, bare.  Bands: blue, green, red, nir, swir.
 
@@ -9,13 +9,13 @@ Classes: water, forest, cropland, urban, bare.  Bands: blue, green, red, nir, sw
 | Pipeline | Features | Accuracy | Macro-F1 |
 |---|---|---:|---:|
 | BEFORE — RandomForest-on-indices | 4 hand-computed indices | 1.000 | 1.000 |
-| AFTER — SmallCNN-on-bands | raw 5-band patches (24,309 params) | 0.570 | 0.461 |
-| **Δ (after − before)** | | **-0.430** | **-0.539** |
+| AFTER — SmallCNN-on-bands | raw 5-band patches (24,309 params) | 1.000 | 1.000 |
+| **Δ (after − before)** | | **+0.000** | **+0.000** |
 
 ## Change detection (NDVI-difference threshold)
 
-- threshold (calibrated for max macro-F1): **0.103**
-- accuracy: **1.000**, macro-F1: **1.000** (n=150)
+- threshold (calibrated for max macro-F1): **0.095**
+- accuracy: **1.000**, macro-F1: **1.000** (n=600)
 
 ## Artifacts
 
