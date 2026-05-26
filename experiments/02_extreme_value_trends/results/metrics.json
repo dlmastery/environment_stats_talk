@@ -1,94 +1,94 @@
 {
   "experiment": "02_extreme_value_trends",
   "config": {
-    "n_years": 25,
-    "seed": 1,
-    "intensification_per_decade": 0.12,
-    "n_boot": 80,
-    "quick": true
+    "n_years": 40,
+    "seed": 0,
+    "intensification_per_decade": 0.08,
+    "n_boot": 500,
+    "quick": false
   },
   "trend": {
     "annual_maxima": {
-      "sen_slope_mm_per_yr": 0.5456558529149425,
-      "mk_z": 2.0785921809112664,
-      "p_value": 0.03765485026971738,
-      "n_blocks": 25
+      "sen_slope_mm_per_yr": 0.35222313642369674,
+      "mk_z": 3.2739407115593018,
+      "p_value": 0.0010605886153989275,
+      "n_blocks": 40
     },
     "rx5day": {
-      "sen_slope_mm_per_yr": 0.4017843991869502,
-      "p_value": 0.16822084690819583
+      "sen_slope_mm_per_yr": 0.2844949940757505,
+      "p_value": 0.04895023859965297
     },
     "r95p": {
-      "sen_slope_mm_per_yr": 4.351078256135045,
-      "p_value": 0.047125304183912364
+      "sen_slope_mm_per_yr": 2.718264272530144,
+      "p_value": 0.0006977771260721077
     }
   },
   "gev": {
-    "c": -0.10100379589303704,
-    "loc": 28.945066016211292,
-    "scale": 6.464099211160659,
-    "xi": 0.10100379589303704,
-    "nll": 87.66759961637305,
+    "c": 0.028085687427576115,
+    "loc": 29.178289685948045,
+    "scale": 6.157922543269027,
+    "xi": -0.028085687427576115,
+    "nll": 135.56235391136755,
     "method": "nll-min",
-    "n": 25
+    "n": 40
   },
   "return_levels": {
     "after_gev_with_ci": {
       "20": {
-        "point": 51.33561779127323,
-        "lo": 42.26475644452329,
-        "hi": 68.0890529522659,
-        "n_ok": 80
+        "point": 46.72641477404219,
+        "lo": 42.33767838604575,
+        "hi": 52.08266644749625,
+        "n_ok": 500
       },
       "50": {
-        "point": 59.860512384764036,
-        "lo": 44.54122843073658,
-        "hi": 96.8806472024974,
-        "n_ok": 80
+        "point": 51.936341998936726,
+        "lo": 45.194727806520156,
+        "hi": 65.52885783191594,
+        "n_ok": 500
       },
       "100": {
-        "point": 66.79569864107017,
-        "lo": 46.436060674567464,
-        "hi": 128.42850524990655,
-        "n_ok": 80
+        "point": 55.752054670857106,
+        "lo": 46.68303855567471,
+        "hi": 80.22319242546415,
+        "n_ok": 500
       }
     },
     "before_empirical": {
-      "20": 51.4379179399733,
-      "50": 53.2882559703429,
-      "100": 53.4300405024968
+      "20": 45.18540205762331,
+      "50": 47.33035837886581,
+      "100": 48.63044145255704
     }
   },
   "validation": {
     "passed": false,
     "warnings": [
-      "Annual maxima show a statistically significant trend (MK p=0.0377): the stationary-GEV assumption is violated. The reported return levels are a record-average; for a current-climate estimate fit a non-stationary GEV (time-varying location/scale)."
+      "Annual maxima show a statistically significant trend (MK p=0.0011): the stationary-GEV assumption is violated. The reported return levels are a record-average; for a current-climate estimate fit a non-stationary GEV (time-varying location/scale)."
     ],
     "notes": [
-      "Block count adequate: 25 annual maxima (>= 20).",
-      "Block-maxima lag-1 autocorrelation -0.17: independence OK.",
-      "GEV shape xi=0.10 in a plausible range (|xi|<=0.5).",
+      "Block count adequate: 40 annual maxima (>= 20).",
+      "Block-maxima lag-1 autocorrelation 0.08: independence OK.",
+      "GEV shape xi=-0.03 in a plausible range (|xi|<=0.5).",
       "Multiple-testing: 3 trend tests reported; use a Bonferroni threshold of alpha/3 = 0.0167 for family-wise control."
     ]
   },
   "trend_table": [
     {
       "index": "AnnualMaxima(Rx1day)",
-      "sen_slope_mm_per_yr": 0.5456558529149425,
-      "mk_z": 2.0785921809112664,
-      "mk_p": 0.03765485026971738
+      "sen_slope_mm_per_yr": 0.35222313642369674,
+      "mk_z": 3.2739407115593018,
+      "mk_p": 0.0010605886153989275
     },
     {
       "index": "Rx5day",
-      "sen_slope_mm_per_yr": 0.4017843991869502,
-      "mk_z": 1.3779431311658958,
-      "mk_p": 0.16822084690819583
+      "sen_slope_mm_per_yr": 0.2844949940757505,
+      "mk_z": 1.969024840759865,
+      "mk_p": 0.04895023859965297
     },
     {
       "index": "R95p",
-      "sen_slope_mm_per_yr": 4.351078256135045,
-      "mk_z": 1.9851723076118837,
-      "mk_p": 0.047125304183912364
+      "sen_slope_mm_per_yr": 2.718264272530144,
+      "mk_z": 3.3904510571663944,
+      "mk_p": 0.0006977771260721077
     }
   ]
 }
