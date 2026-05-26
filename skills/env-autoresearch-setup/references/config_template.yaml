@@ -1,0 +1,65 @@
+# env-autoresearch project config — fill every {{placeholder}} from wizard answers.
+# This is the machine-readable record of the setup; the runner reads it and the
+# env-stats-validate skill audits against it.
+
+project:
+  name: "{{project_name}}"
+  domain_description: "{{domain_description}}"   # e.g. "PM2.5 nowcasting at OpenAQ stations"
+  created: "{{setup_date_iso}}"
+
+task:
+  type: "{{task_type}}"            # forecasting | classification | evt
+  target: "{{target_variable}}"
+  features: "{{feature_columns}}"   # list or "all_others"
+  group_column: "{{group_column}}"  # basin/gauge/grid/station id, or null
+  time_column: "{{time_column}}"    # for forecasting/walk-forward, or null
+
+dataset:
+  source: "{{dataset_source}}"      # era5 | gbif | sentinel2 | camels | openaq | synthetic
+  real_fetch: "{{real_fetch_hint}}" # see climate-data-fetch skill (cdsapi / pygbif / sentinelhub / openaq / camels)
+  synthetic_generator: "{{synthetic_generator}}"  # common/synthetic_*.py function for runs-anywhere
+  cache_dir: "data/"
+  runs_anywhere: true               # default path: synthetic, deterministic seeds, no keys, no GPU
+
+metrics:
+  primary: "{{primary_metric}}"     # latitude_weighted_rmse | rmse | anomaly_correlation | macro_f1 | return_level_error
+  primary_higher_is_better: {{higher_is_better}}
+  primary_impl: "{{primary_impl}}"  # e.g. common.metrics.latitude_weighted_rmse
+  skill_score_reference: "{{baseline_name}}"   # climatology | persistence | arima | rf_indices
+  composite:
+    formula: "min(val, test) - penalty * n_below_threshold_folds"   # default; record exactly
+    penalty_weight: {{penalty_weight}}
+    below_threshold: {{below_threshold}}
+    fingerprint: "{{composite_fingerprint}}"   # hash/string of the formula (Goodhart guard)
+
+split:
+  type: "{{split_type}}"            # walk_forward | spatial_group | super_fold
+  n_splits: {{n_splits}}
+  val_fraction: {{val_fraction}}
+  purge: {{purge}}                  # walk_forward: units to drop around the boundary
+  embargo: {{embargo}}              # walk_forward: units to hold out after the boundary
+  regime_windows: {{regime_windows}}  # super_fold only: list of [start, end] per regime
+
+backbones:                          # each MUST cite an anchor from env_sota_catalog.md
+  tier1:
+    - name: "{{baseline_backbone}}"
+      anchor: "{{baseline_anchor}}"
+  tier2:
+    - name: "{{modern_backbone}}"
+      anchor: "{{modern_anchor}}"
+  tier3:                            # keep xgboost/lightgbm/catboost separate if used
+    - name: "{{gbm_backbone}}"
+      anchor: "GBM"
+
+budget:
+  gpu_vram_gb: {{gpu_vram_gb}}
+  cpu_cores: {{cpu_cores}}
+  runner_cores: {{runner_cores}}
+  seconds_per_experiment: {{seconds_per_experiment}}
+  experiments_per_backbone: 50
+  multi_seed_median: 3              # 3-seed median before declaring a champion
+
+gates:
+  require_pre_run_reasoning: true   # runner refuses to launch without it
+  require_citation: true            # no anchor -> no experiment
+  leakage_safe_split_required: true

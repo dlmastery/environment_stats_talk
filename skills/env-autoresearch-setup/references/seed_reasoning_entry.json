@@ -1,0 +1,21 @@
+{
+  "experiment_id": "exp1",
+  "phase": "pre-run",
+  "created": "{{setup_date_iso}}",
+  "note": "SEED ENTRY. Author the four fields below BEFORE launching Exp1. The runner refuses to launch with empty diagnose/cite/hypothesize/predict. Results stay empty until after Execute+Analyze.",
+  "diagnose": "",
+  "cite": {
+    "anchor": "",
+    "why_it_addresses_the_weakness": ""
+  },
+  "hypothesize": "",
+  "predict": {
+    "primary_metric": "{{primary_metric}}",
+    "expected_direction": "",
+    "expected_value_or_range": "",
+    "expected_skill_score_vs": "{{baseline_name}}"
+  },
+  "config_ref": "config.yaml",
+  "composite_fingerprint": "{{composite_fingerprint}}",
+  "results": {}
+}
