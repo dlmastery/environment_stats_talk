@@ -27,6 +27,11 @@ from pptx.util import Inches, Pt, Emu
 from pptx.dml.color import RGBColor
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 
+# Repo root, derived from this file's location (docs/talk/build_deck.py).
+# Used only to resolve the committed result figures; never written to.
+HERE = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT = os.path.abspath(os.path.join(HERE, os.pardir, os.pardir))
+
 # ---------------------------------------------------------------------------
 # Theme
 # ---------------------------------------------------------------------------
@@ -102,6 +107,111 @@ def _set_notes(slide, notes_text):
 
 
 # ---------------------------------------------------------------------------
+# Image embedding (real committed result figures)
+# ---------------------------------------------------------------------------
+def _png_size_px(path):
+    """Return (width_px, height_px) for a PNG without external deps."""
+    with open(path, "rb") as fh:
+        head = fh.read(26)
+    # PNG signature (8 bytes) + IHDR length/type (8 bytes) then width/height.
+    if head[:8] != b"\x89PNG\r\n\x1a\n":
+        return None
+    w = int.from_bytes(head[16:20], "big")
+    h = int.from_bytes(head[20:24], "big")
+    return (w, h)
+
+
+def _add_image_fit(slide, path, box_left, box_top, box_w, box_h,
+                   max_w=Inches(5.5), align="center", valign="middle"):
+    """Place an image inside the given box, preserving aspect ratio.
+
+    Scales to fit within (box_w, box_h) and caps the rendered width at max_w.
+    Returns the picture shape, or None if the file is unreadable.
+    """
+    size = _png_size_px(path)
+    if size is None:
+        print(f"WARNING: cannot read PNG dimensions, skipping: {path}")
+        return None
+    px_w, px_h = size
+    if px_w <= 0 or px_h <= 0:
+        print(f"WARNING: bad PNG dimensions, skipping: {path}")
+        return None
+    ar = px_w / px_h
+
+    # Fit within the box.
+    w = box_w
+    h = int(round(w / ar))
+    if h > box_h:
+        h = box_h
+        w = int(round(h * ar))
+    # Cap absolute width.
+    if w > max_w:
+        w = max_w
+        h = int(round(w / ar))
+        if h > box_h:
+            h = box_h
+            w = int(round(h * ar))
+
+    # Position within the box.
+    if align == "center":
+        left = box_left + (box_w - w) // 2
+    elif align == "right":
+        left = box_left + (box_w - w)
+    else:  # left
+        left = box_left
+    if valign == "middle":
+        top = box_top + (box_h - h) // 2
+    elif valign == "bottom":
+        top = box_top + (box_h - h)
+    else:  # top
+        top = box_top
+
+    return slide.shapes.add_picture(path, left, top, width=Emu(int(w)), height=Emu(int(h)))
+
+
+def _resolve_images(images):
+    """Resolve repo-relative figure paths; warn and drop any that are missing."""
+    resolved = []
+    for rel in images or []:
+        full = os.path.join(REPO_ROOT, rel.replace("/", os.sep))
+        if os.path.isfile(full):
+            resolved.append(full)
+        else:
+            print(f"WARNING: figure not found, skipping: {rel}")
+    return resolved
+
+
+def _place_images(slide, images):
+    """Lay out 1-2 committed figures in the right column of a content slide.
+
+    Bullets occupy the left ~half; images stack on the right half so the
+    title, bullets, and takeaway footer all remain readable.
+    """
+    paths = _resolve_images(images)
+    if not paths:
+        return False
+
+    # Right-column region: starts mid-slide, sits above the takeaway footer.
+    col_left = Inches(6.95)
+    col_top = Inches(1.55)
+    col_w = Inches(5.7)            # box width; max_w cap keeps it <= 5.5in
+    col_bottom = Inches(6.35)      # leave room for the takeaway footer
+    col_h_total = col_bottom - col_top
+
+    if len(paths) == 1:
+        _add_image_fit(slide, paths[0], col_left, col_top, col_w, col_h_total,
+                       align="center", valign="middle")
+    else:
+        gap = Inches(0.18)
+        each_h = (col_h_total - gap) // 2
+        _add_image_fit(slide, paths[0], col_left, col_top, col_w, each_h,
+                       align="center", valign="middle")
+        _add_image_fit(slide, paths[1], col_left, col_top + each_h + gap,
+                       col_w, each_h, align="center", valign="middle")
+    return True
+
+
+# ---------------------------------------------------------------------------
 # Slide builders
 # ---------------------------------------------------------------------------
 def build_title_slide(prs, *, title, subtitle_lines, takeaway, visual, notes):
@@ -168,20 +278,27 @@ def build_section_divider(prs, *, label, title, notes=""):
     return slide
 
 
-def build_content_slide(prs, *, number, title, bullets, takeaway, visual, notes):
+def build_content_slide(prs, *, number, title, bullets, takeaway, visual, notes,
+                        images=None):
     slide = prs.slides.add_slide(prs.slide_layouts[6])  # blank
     _set_bg_white(slide)
     _add_accent_bar(slide)
 
-    # Title
+    # Title (full width regardless of images)
     box, ttf = _add_box(slide, Inches(0.7), Inches(0.32), Inches(11.93), Inches(1.0))
     p = ttf.paragraphs[0]
     r = p.add_run()
     r.text = title
     _style_run(r, 28, TITLE_BLUE, bold=True)
 
+    # If real figures are supplied, embed them in the right column and narrow
+    # the bullets/visual-note to the left half so everything stays readable.
+    has_images = _place_images(slide, images)
+    text_w = Inches(5.95) if has_images else Inches(11.93)
+    body_size = 16 if has_images else 18
+
     # Bullets (<=5)
-    box, btf = _add_box(slide, Inches(0.7), Inches(1.5), Inches(11.93), Inches(4.2))
+    box, btf = _add_box(slide, Inches(0.7), Inches(1.5), text_w, Inches(4.2))
     for i, b in enumerate(bullets):
         p = btf.paragraphs[0] if i == 0 else btf.add_paragraph()
         p.space_after = Pt(12)
@@ -189,12 +306,21 @@ def build_content_slide(prs, *, number, title, bullets, takeaway, visual, notes)
         # bullet glyph
         rb = p.add_run()
         rb.text = "•  "
-        _style_run(rb, 18, ACCENT_GREEN, bold=True)
+        _style_run(rb, body_size, ACCENT_GREEN, bold=True)
         rt = p.add_run()
         rt.text = b
-        _style_run(rt, 18, BODY_GREY)
+        _style_run(rt, body_size, BODY_GREY)
 
-    _add_visual_note(slide, visual)
+    # Visual note: keep on the left under the bullets when an image is present
+    # (the figure now occupies the right column), otherwise full width as before.
+    if has_images:
+        nbox, ntf = _add_box(slide, Inches(0.7), Inches(5.95), text_w, Inches(0.6))
+        np = ntf.paragraphs[0]
+        nr = np.add_run()
+        nr.text = "[Figure: committed result] " + visual
+        _style_run(nr, 10, MUTED_GREY, italic=True)
+    else:
+        _add_visual_note(slide, visual)
     _add_takeaway_footer(slide, takeaway)
     _set_notes(slide, notes)
     return slide
@@ -416,6 +542,10 @@ def build():
             "the future. The exact numbers are in RESULTS.md so I never quote a figure "
             "I haven't measured."
         ),
+        images=[
+            "experiments/01_climate_timeseries_forecast/results/forecast_plot.png",
+            "experiments/01_climate_timeseries_forecast/results/before_after_bars.png",
+        ],
     )
 
     # ----- Slide 8: Exp02 extremes & trends -----
@@ -444,6 +574,10 @@ def build():
             "doesn't reinvent extreme-value theory; it removes the glue-code tax and "
             "makes the uncertainty reporting non-optional."
         ),
+        images=[
+            "experiments/02_extreme_value_trends/results/return_levels.png",
+            "experiments/02_extreme_value_trends/results/trend_plot.png",
+        ],
     )
 
     # ----- Slide 9: Exp03 biodiversity from text -----
@@ -472,6 +606,10 @@ def build():
             "believable version of the result is the one with a confusion-matrix-grade "
             "evaluation attached."
         ),
+        images=[
+            "experiments/03_biodiversity_text_extraction/results/interaction_network.png",
+            "experiments/03_biodiversity_text_extraction/results/before_after_bars.png",
+        ],
     )
 
     # ----- Slide 10: Exp04 remote sensing -----
@@ -500,6 +638,74 @@ def build():
             "in land cover. EagleVision is the kind of verifiable work showing this "
             "modality is maturing fast."
         ),
+        images=[
+            "experiments/04_remote_sensing_landcover/results/hard/before_after_hard_bars.png",
+            "experiments/04_remote_sensing_landcover/results/change_map.png",
+        ],
+    )
+
+    # ----- Slide: Exp08 hydrology streamflow (bonus demo) -----
+    build_content_slide(
+        prs,
+        number=None,
+        title="Bonus demo: Hydrology rainfall-runoff — Exp08",
+        bullets=[
+            "Task: predict daily streamflow from rainfall on a synthetic catchment; metric NSE / KGE",
+            "BEFORE: linear / conceptual bucket model — NSE 0.14 (can't carry catchment state)",
+            "AFTER: LSTM rainfall-runoff model — NSE 0.70 (+0.56 NSE / +0.51 KGE)",
+            "Why it wins: the LSTM carries soil-moisture / snow / routing state the linear model drops",
+            "Command: python experiments/08_hydrology_streamflow/run_before_after.py",
+        ],
+        takeaway="A clean AFTER win: the classic LSTM-hydrology result, reproduced in one command.",
+        visual=(
+            "Observed-vs-predicted hydrograph (BEFORE linear vs AFTER LSTM) plus a "
+            "BEFORE/AFTER NSE bar."
+        ),
+        notes=(
+            "Hydrology is the cell where AFTER cleanly wins on the science, not just "
+            "on speed. A linear or conceptual bucket model can't carry the catchment's "
+            "memory — soil moisture, snowpack, routing — so it tops out around an NSE "
+            "of 0.14 here. An LSTM rainfall-runoff model carries that state and reaches "
+            "0.70, a +0.56 NSE gain, which is the well-documented LSTM-hydrology result "
+            "from the literature reproduced in one command. The gap widens with more "
+            "data, and every number here is committed in RESULTS.md."
+        ),
+        images=[
+            "experiments/08_hydrology_streamflow/results/hydrograph.png",
+            "experiments/08_hydrology_streamflow/results/before_after_bars.png",
+        ],
+    )
+
+    # ----- Slide: Exp12 conformal uncertainty (bonus demo) -----
+    build_content_slide(
+        prs,
+        number=None,
+        title="Bonus demo: Calibrated uncertainty — Exp12",
+        bullets=[
+            "Task: build prediction intervals that actually cover at the nominal rate",
+            "BEFORE: normal-theory PIs — 80% nominal but 86.9% empirical (miscalibrated under heavy tails)",
+            "AFTER: split / normalized conformal PIs — distribution-free finite-sample coverage",
+            "Result: mean coverage gap 0.033 → 0.004 (~7× tighter) AND narrower bands (6.37 → 5.22 °C at 80%)",
+            "Command: python experiments/12_conformal_uncertainty/run_before_after.py",
+        ],
+        takeaway="Conformal prediction makes uncertainty honest: calibrated coverage and sharper bands.",
+        visual=(
+            "Coverage plot: nominal vs empirical coverage for normal-theory vs "
+            "conformal PIs across target levels."
+        ),
+        notes=(
+            "Uncertainty is mandatory for this audience, so this experiment asks a "
+            "blunt question: do our prediction intervals actually cover at the rate we "
+            "claim? Normal-theory intervals look fine on paper but, under heavy tails, "
+            "an 80% interval here covers 86.9% — miscalibrated, and the over-coverage "
+            "hides bands that are the wrong width. Split conformal prediction gives "
+            "distribution-free finite-sample coverage: the mean gap drops from 0.033 to "
+            "0.004, roughly seven times tighter, and the bands get narrower too. It's "
+            "both a calibration and a sharpness win, committed in RESULTS.md."
+        ),
+        images=[
+            "experiments/12_conformal_uncertainty/results/coverage_plot.png",
+        ],
     )
 
     # ----- Section divider: Flagship -----
@@ -541,6 +747,9 @@ def build():
             "machine-enforced version of \"don't fish.\" It produces a champion "
             "archive and a human-readable journal you can audit afterward."
         ),
+        images=[
+            "experiments/05_autoresearch_climate/champion_progress.png",
+        ],
     )
 
     # ----- Slide 12: Autoresearch honestly -----
