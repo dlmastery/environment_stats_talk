@@ -1,0 +1,58 @@
+{
+  "experiment": "06_spatial_interpolation",
+  "config": {
+    "n_points": 180,
+    "grid_res": 45,
+    "n_grid": 2025,
+    "model": "rf",
+    "n_estimators": 400,
+    "quick": false,
+    "seed": 0,
+    "device": "cpu"
+  },
+  "covariate_informativeness": {
+    "corr_value_covariate": -0.9392601421378296,
+    "univariate_r2": 0.8822096146087766
+  },
+  "before": {
+    "idw": {
+      "rmse": 4.935827773660884,
+      "mae": 3.641652106812807,
+      "power": 2.0
+    },
+    "kriging": {
+      "rmse": 2.904904667176777,
+      "mae": 2.2374844725040046,
+      "kernel": "1.01**2 * RBF(length_scale=9.31) + WhiteKernel(noise_level=0.0567)",
+      "length_scale": 9.306963122242015,
+      "mean_pred_std": 2.747492875620544
+    }
+  },
+  "after": {
+    "ml": {
+      "rmse": 2.2027738244176693,
+      "mae": 1.5993381714132018,
+      "model": "rf",
+      "n_estimators": 400,
+      "feature_importance": {
+        "x": 0.013175973376697521,
+        "y": 0.02108097376539682,
+        "covariate": 0.5667433633521877,
+        "x*y": 0.023136152372084898,
+        "covariate^2": 0.08336290379668597,
+        "x*cov": 0.26003244712018214,
+        "y*cov": 0.03246818621676488
+      }
+    }
+  },
+  "gains_after_vs_kriging": {
+    "rmse_abs": -0.7021308427591078,
+    "mae_abs": -0.6381463010908028,
+    "rmse_skill": 0.24170529611295444
+  },
+  "uncertainty_note": "Kriging supplies a calibrated predictive-variance surface (mean predictive std ~2.75); the vanilla ML model gives a lower-RMSE point map but no such uncertainty surface. Lower RMSE is not the whole story.",
+  "wall_time_sec": {
+    "before": 5.429,
+    "after": 2.683
+  }
+}
