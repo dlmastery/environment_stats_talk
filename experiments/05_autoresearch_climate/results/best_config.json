@@ -1,0 +1,42 @@
+{
+  "experiment_num": 5,
+  "backbone": "mlp",
+  "composite": -1.7967063040710554,
+  "val_primary": 1.7967063040710554,
+  "test_primary": 1.7913709398700748,
+  "primary_metric": "rmse",
+  "composite_fingerprint": "942df6a8450d8d57",
+  "config": {
+    "paths": {
+      "results_dir": "C:\\Users\\evija\\climate\\environment_stats_talk\\experiments\\05_autoresearch_climate\\results"
+    },
+    "primary_metric": "rmse",
+    "backbone": "mlp",
+    "backbone_config": {
+      "hidden": 16,
+      "epochs": 1500,
+      "lr": 0.08,
+      "weight_decay": 0.0001
+    },
+    "data": {
+      "n_years": 14,
+      "seed": 0,
+      "n_lags": 3,
+      "n_regimes": 3
+    },
+    "split": {
+      "name": "walk_forward",
+      "n_blocks": 7,
+      "n_initial": 3,
+      "gap": 1
+    },
+    "composite": {
+      "higher_is_better": false,
+      "penalty_weight": 0.5,
+      "below_threshold": -12.0
+    },
+    "seed": 0,
+    "description": "Exp5 \u2014 more epochs 400 -> 1500 (full convergence)"
+  },
+  "timestamp": "2026-05-26T17:12:55"
+}
