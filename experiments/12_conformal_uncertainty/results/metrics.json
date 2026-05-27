@@ -1,0 +1,96 @@
+{
+  "experiment": "12_conformal_uncertainty",
+  "config": {
+    "n_years": 20,
+    "quick": false,
+    "seed": 0,
+    "lookback": 7,
+    "ridge_alpha": 1.0,
+    "levels": [
+      0.8,
+      0.9,
+      0.95
+    ],
+    "hetero_kwargs": {
+      "heat_extreme_rate": 0.06,
+      "warming_c_per_decade": 0.6
+    },
+    "point_forecaster": "ridge on lag features + sin/cos day-of-year",
+    "split": "chronological 60/20/20 train/calibration/test (no shuffle)",
+    "n_cal_targets": 1453,
+    "n_test_targets": 1453,
+    "normal_theory_sigma_hat": 2.486012881461483
+  },
+  "per_level": {
+    "0.80": {
+      "nominal": 0.8,
+      "normal_theory": {
+        "empirical_coverage": 0.8692360633172747,
+        "mean_width": 6.371907400402014,
+        "coverage_gap": 0.06923606331727461
+      },
+      "split_conformal": {
+        "empirical_coverage": 0.791465932553338,
+        "mean_width": 5.21692894038874,
+        "coverage_gap": 0.008534067446662075,
+        "Q": 2.60846447019437
+      },
+      "normalized_conformal": {
+        "empirical_coverage": 0.8134893324156917,
+        "mean_width": 5.489205746681342,
+        "coverage_gap": 0.013489332415691613,
+        "Q": 1.5516996133104344
+      }
+    },
+    "0.90": {
+      "nominal": 0.9,
+      "normal_theory": {
+        "empirical_coverage": 0.9291121816930489,
+        "mean_width": 8.178254609440003,
+        "coverage_gap": 0.029112181693048855
+      },
+      "split_conformal": {
+        "empirical_coverage": 0.9043358568479009,
+        "mean_width": 7.268762914886883,
+        "coverage_gap": 0.004335856847900832,
+        "Q": 3.6343814574434425
+      },
+      "normalized_conformal": {
+        "empirical_coverage": 0.8974535443909153,
+        "mean_width": 7.359856731346434,
+        "coverage_gap": 0.00254645560908473,
+        "Q": 2.0804989594268575
+      }
+    },
+    "0.95": {
+      "nominal": 0.95,
+      "normal_theory": {
+        "empirical_coverage": 0.9497591190640055,
+        "mean_width": 9.744991425534295,
+        "coverage_gap": 0.000240880935994503
+      },
+      "split_conformal": {
+        "empirical_coverage": 0.9497591190640055,
+        "mean_width": 9.723721281043659,
+        "coverage_gap": 0.000240880935994503,
+        "Q": 4.861860640521829
+      },
+      "normalized_conformal": {
+        "empirical_coverage": 0.94287680660702,
+        "mean_width": 9.256012365404029,
+        "coverage_gap": 0.007123193392979954,
+        "Q": 2.6165080106311054
+      }
+    }
+  },
+  "mean_coverage_gap": {
+    "normal_theory": 0.03286304198210599,
+    "split_conformal": 0.004370268410185803,
+    "normalized_conformal": 0.007719660472585432
+  },
+  "wall_time_sec": {
+    "before": 0.1971,
+    "after": 0.2913
+  },
+  "guarantee_note": "Conformal gives finite-sample, distribution-free MARGINAL coverage under exchangeability; it does NOT guarantee conditional (per-season) coverage. The normalized variant only improves conditional coverage."
+}
