@@ -1,0 +1,80 @@
+{
+  "experiment": "07_air_quality_nowcast",
+  "config": {
+    "n_days": 240,
+    "freq": "h",
+    "quick": false,
+    "seed": 0,
+    "n_lags": 6,
+    "after_model": "gbm",
+    "use_weather": true,
+    "n_train": 4031,
+    "n_val": 865,
+    "n_test": 864,
+    "n_eval_targets": 864,
+    "exceedance_quantile": 0.9,
+    "exceedance_threshold": 76.207,
+    "after_n_features": 21
+  },
+  "before": {
+    "persistence": {
+      "rmse": 17.398664442153454,
+      "mae": 9.504462467755069,
+      "skill_vs_persistence": 5.739853037312059e-14,
+      "spike_precision": 0.735632183908046,
+      "spike_recall": 0.735632183908046,
+      "spike_f1": 0.735632183908046,
+      "spike_support": 87
+    },
+    "linear_ar": {
+      "rmse": 18.100895259489032,
+      "mae": 12.91696014495908,
+      "skill_vs_persistence": -0.040361190921825996,
+      "spike_precision": 0.711340206185567,
+      "spike_recall": 0.7931034482758621,
+      "spike_f1": 0.75,
+      "spike_support": 87
+    },
+    "arima": {
+      "rmse": 17.39862965612484,
+      "mae": 11.878176197726109,
+      "skill_vs_persistence": 1.999350566661562e-06,
+      "spike_precision": 0.7415730337078652,
+      "spike_recall": 0.7586206896551724,
+      "spike_f1": 0.75,
+      "spike_support": 87
+    }
+  },
+  "after": {
+    "rmse": 12.141709004581559,
+    "mae": 6.298302231980991,
+    "skill_vs_persistence": 0.30214706738271524,
+    "spike_precision": 0.8333333333333334,
+    "spike_recall": 0.8620689655172413,
+    "spike_f1": 0.847457627118644,
+    "spike_support": 87,
+    "model": "gbm",
+    "n_features": 21
+  },
+  "ablation_history_only": {
+    "rmse": 13.63478864779648,
+    "mae": 8.069922368794186,
+    "skill_vs_persistence": 0.21633130559370084,
+    "spike_precision": 0.7075471698113207,
+    "spike_recall": 0.8620689655172413,
+    "spike_f1": 0.7772020725388601,
+    "spike_support": 87
+  },
+  "best_before_method": "arima",
+  "gains_after_minus_bestbefore": {
+    "rmse": -5.256920651543281,
+    "mae": -5.579873965745118,
+    "skill_vs_persistence": 0.3021450680321486,
+    "spike_f1": 0.09745762711864403
+  },
+  "wall_time_sec": {
+    "before": 32.033,
+    "after": 9.199
+  },
+  "real_data_note": "To use real data instead of this synthetic series, pull PM2.5 from OpenAQ (https://openaq.org; the v3 REST API or the open S3 archive) for one station, and the matching meteorology (10 m wind speed, 2 m temperature, planetary boundary-layer height) from a reanalysis such as ERA5 (Copernicus CDS via cdsapi/xarray) or a local met station. Resample everything to a common hourly/daily index and assemble a DataFrame with the SAME columns ['pm25', 'wind', 'temp', 'boundary_layer', 'hour', 'dow', 'is_weekend'] indexed by a 'date' DatetimeIndex. Every script here (baseline, GBM nowcast, runner, tests) then works unchanged. OpenAQ is one of the verified open air-quality datasets; ERA5 boundary-layer height is the standard ventilation proxy."
+}
