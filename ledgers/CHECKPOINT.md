@@ -4,6 +4,15 @@ Append-only log for crash recovery. Newest at top. Pushed to the public repo per
 
 ---
 
+## 2026-05-26 — Wave 4 COMPLETE (heavy docs + README overhaul + 9 experiments)
+- Added Exp06 (spatial kriging 2.91 -> RF+cov 2.20) and Exp07 (air quality ARIMA 17.4 -> GBM+weather 12.1). 9 experiments total; **11 test components green**.
+- common/__init__ exports all generators (climate/biodiversity/remote-sensing+hard/hydrology/spatial/airquality). deck.pptx now 20 slides with 12 real result figures embedded.
+- **Heavy documentation set written** (parallel doc agents): GETTING_STARTED, EXPERIMENTS_INDEX, TUTORIAL_run_an_experiment, TUTORIAL_autoresearch, GUIDE_using_claude_code_for_envstats, GUIDE_adapt_to_real_data, GLOSSARY, FAQ, ADDENDUM_methodology, CONTRIBUTING.
+- **README fully overhauled**: TOC, thesis, 9-experiment table, repo map, docs index, autoresearch section, hardware/reproducibility, honest-results philosophy, credits. All 39 internal links verified.
+- Synced to public GitHub after each unit. v1++ complete.
+
+---
+
 ## 2026-05-26 — Wave 3 COMPLETE (backlog expansion + verification)
 - Second parallel SME wave (5 agents) all integrated & pushed:
   - **deck.pptx** (18 slides, reproducible build_deck.py) — tangible presentation artifact.

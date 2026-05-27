@@ -3,6 +3,8 @@
 ### From Data to Discovery — transforming Environmental Statistics with Claude Code & AI-for-Science
 **Companion repository for the talk at the International Environment Statistics Institute conference, Mexico City, 7–11 December 2026 — session _"Modern Approaches to Environmental Statistics."_**
 
+[![tests](https://img.shields.io/badge/tests-11%20components%20green-brightgreen)](run_all_tests.py) [![experiments](https://img.shields.io/badge/before%2Fafter%20experiments-9-blue)](RESULTS.md) [![hardware](https://img.shields.io/badge/runs%20on-CPU%20or%20RTX%204090-orange)](#hardware--reproducibility) [![rigor](https://img.shields.io/badge/claims-web--verified-success)](ledgers/CITATIONS-TO-VERIFY.md)
+
 ---
 
 ## The thesis (one sentence)
@@ -11,60 +13,122 @@
 
 This repo is the **living proof behind the slides.** Every claim on a slide points to a folder here with runnable code and **real, committed results**.
 
-## What makes this credible (and different)
+## Table of contents
 
-- **Before/After, with receipts.** Each topic ships a `before/` script (traditional method), an `after/` script (agentic / AI-for-science), and a `results/` folder with the actual metrics, plots, and tables produced on this machine.
-- **Runs anywhere, immediately.** The headline results are produced from **synthetic + small public data with no API keys and no GPU required** (deterministic seeds → reproducible). Every experiment also documents a **real-data variant** and, where relevant, a **4090 GPU variant**.
-- **Real hardware.** Heavy variants were exercised on an **NVIDIA RTX 4090 (Laptop, ~16 GB)** — the same class of hardware an individual scientist can own.
-- **Zero-hallucination discipline.** This is for *scientists*. We build only on **verifiable** papers/tools/datasets; every speculative or future-dated claim from the source material is quarantined in [`ledgers/CITATIONS-TO-VERIFY.md`](ledgers/CITATIONS-TO-VERIFY.md) and never presented as fact.
-- **Autoresearch.** The flagship demo adapts a Karpathy-style **autonomous research loop where Claude Code is the researcher** (from `dlmastery/autoresearch`'s `generalized_ml_autoresearch`) to environmental statistics, running on the 4090.
+- [Why this is credible (and different)](#why-this-is-credible-and-different)
+- [Quickstart](#quickstart)
+- [The 9 before/after experiments](#the-9-beforeafter-experiments)
+- [Repository map](#repository-map)
+- [Documentation index](#documentation-index)
+- [The autoresearch loop (flagship)](#the-autoresearch-loop-flagship)
+- [The talk kit](#the-talk-kit)
+- [Hardware & reproducibility](#hardware--reproducibility)
+- [The honest-results philosophy](#the-honest-results-philosophy)
+- [Status](#status)
+- [Credits & license](#credits--license)
+
+## Why this is credible (and different)
+
+- **Before/After, with receipts.** Each topic ships a `before/` script (traditional method), an `after/` script (agentic / AI-for-science), and a `results/` folder with the actual metrics, plots, and tables produced on this machine. The scoreboard is [`RESULTS.md`](RESULTS.md).
+- **Runs anywhere, immediately.** Headline results come from **synthetic + small data with no API keys and no GPU** (deterministic seeds → reproducible). Every experiment also documents a **real-data** variant and, where relevant, a **4090 GPU** variant.
+- **Honest by design.** Across 9 experiments the verdicts are mixed *on purpose* — clean AI wins where structure rewards it, ties/classical-wins where deserved (e.g. **SARIMA beats the LSTM at 1-step**). That mix is the point. See [the philosophy](#the-honest-results-philosophy).
+- **Zero-hallucination discipline.** Built only on **verifiable** papers/tools/datasets; every claim was **web-verified** ([`ledgers/CITATIONS-TO-VERIFY.md`](ledgers/CITATIONS-TO-VERIFY.md)) and unverified performance stats stay flagged.
+- **Autoresearch.** The flagship adapts a Karpathy-style **autonomous research loop where Claude Code is the researcher** (from `dlmastery/autoresearch`) to environmental statistics, with hard citation/reasoning gates.
+
+## Quickstart
+
+```bash
+pip install -r requirements.txt          # numpy/pandas/sklearn/scipy/statsmodels/matplotlib/torch
+python experiments/01_climate_timeseries_forecast/run_before_after.py --quick   # first before/after in minutes
+python run_all_tests.py                   # all 11 test components (CPU)
+```
+
+New here? Start with **[docs/GETTING_STARTED.md](docs/GETTING_STARTED.md)** → then **[docs/EXPERIMENTS_INDEX.md](docs/EXPERIMENTS_INDEX.md)**.
+
+## The 9 before/after experiments
+
+Full numbers and honest verdicts in **[RESULTS.md](RESULTS.md)**. Each row is self-contained under `experiments/`.
+
+| # | Topic | Before → After | Headline (real, on this machine) | GPU |
+|---|-------|----------------|----------------------------------|-----|
+| [01](experiments/01_climate_timeseries_forecast) | Climate forecasting | persistence/SARIMA → LSTM | LSTM skill +0.32 @14-day; **SARIMA wins @≥7-day** (honest) | 4090 |
+| [02](experiments/02_extreme_value_trends) | Climate extremes & trends | empirical → GEV + bootstrap CIs | 100-yr level **55.8 mm [46.7–80.2]**; flags its own stationarity violation | — |
+| [03](experiments/03_biodiversity_text_extraction) | Biodiversity from text | regex → structured extraction | recall **10% → 100%** (synthetic ceiling, caveated) | — |
+| [04](experiments/04_remote_sensing_landcover) | Land cover + change | RF on indices → CNN on bands | easy: tie; **hard-mode: RF 0.64 → CNN 0.998 (+0.36)** | 4090 |
+| [05](experiments/05_autoresearch_climate) | **Autoresearch loop (flagship)** | by hand → gated 6-experiment loop | champion **+8.0% skill** in ~38 s; gates block guesses | — |
+| [06](experiments/06_spatial_interpolation) | Spatial interpolation | kriging → RF + covariate | **2.91 → 2.20 RMSE** (kriging keeps a variance surface) | — |
+| [07](experiments/07_air_quality_nowcast) | Air-quality PM2.5 | persistence/ARIMA → GBM + weather | **17.4 → 12.1 RMSE**, spike-F1 0.74 → 0.85 | — |
+| [08](experiments/08_hydrology_streamflow) | Hydrology streamflow | linear/bucket → LSTM | **NSE 0.14 → 0.70** (+0.56) | 4090 |
+| [12](experiments/12_conformal_uncertainty) | Uncertainty quantification | normal-theory PIs → conformal | calibration gap **0.033 → 0.004 (~7×)**, narrower bands | — |
 
 ## Repository map
 
-| Path | What's inside |
-|------|---------------|
-| [`CLAUDE.md`](CLAUDE.md) | The full project brief & operating rules (read first if you're an agent). |
-| [`ledgers/`](ledgers/) | `INSIGHTS.md`, `TODO.md` (master task list), `ITEMS.md` (papers/tools/data/benchmarks), `CITATIONS-TO-VERIFY.md`. |
-| [`docs/`](docs/) | `taxonomy.md`, `before_after.md`, `zero_to_hero.md`, `autoresearch_protocol.md`. |
-| [`docs/talk/`](docs/talk/) | Slide outline + speaker notes, one-page handout, live-demo script. |
-| [`common/`](common/) | Shared synthetic-data generators + plotting helpers (no network). |
-| [`experiments/`](experiments/) | The before/after experiments, each self-contained with committed results. |
-| [`autoresearch_env/`](autoresearch_env/) | Environmental-statistics adaptation of the autoresearch loop. |
-| [`skills/`](skills/) | Claude Code skills (autoresearch setup, data fetch, statistical-rigor validation). |
-
-## Experiments (each is a BEFORE → AFTER pair)
-
-| # | Topic | Before | After | Headline artifact |
-|---|-------|--------|-------|-------------------|
-| 01 | Climate time-series forecasting | persistence / ARIMA | LSTM/TCN on 4090 (+ foundation-model zero-shot) | RMSE/ACC table + forecast plots |
-| 02 | Climate extremes & trends | hand-coded Mann-Kendall + GEV | Claude-Code pipeline + rigor checklist | return-level plot + trend CIs |
-| 03 | Biodiversity from text | regex/keyword extraction | structured-LLM extraction → interaction network | precision/recall + network graph |
-| 04 | Remote-sensing land cover | Random Forest on spectral indices | CNN on 4090 (+ hard-mode texture classes) | accuracy/F1, change map, **hard-mode CNN +0.36 acc** |
-| 05 | **Autoresearch loop (flagship)** | one model, by hand | Claude Code runs N experiments autonomously | champion archive + research journal |
-| 08 | Hydrology: rainfall-runoff streamflow | linear / conceptual bucket | LSTM on 4090 | NSE/KGE + hydrograph (**+0.56 NSE**) |
-| 12 | Uncertainty quantification | normal-theory prediction intervals | split/normalized conformal | coverage + width (**gap ~7× smaller**) |
-
-See [`ledgers/TODO.md`](ledgers/TODO.md) for the full, expanding task list. Headline numbers: [`RESULTS.md`](RESULTS.md).
-
-## Quick start
-
-```bash
-pip install -r requirements.txt
-# Run any experiment's committed-results path (no keys/GPU needed):
-python experiments/01_climate_timeseries_forecast/run_before_after.py
-# Open the aggregated scoreboard when built:
-#   RESULTS.md  (top-level before/after "100x" table)
 ```
+environment_stats_talk/
+├── README.md               ← you are here
+├── CLAUDE.md               full project brief & operating rules (read first if you're an agent)
+├── RESULTS.md              the before/after scoreboard (real numbers)
+├── CONTRIBUTING.md         the before/after experiment contract (how to add one)
+├── requirements.txt        deps (+ numpy-2 ABI pins)
+├── run_all_tests.py        runs all 11 test components (one subprocess each)
+├── common/                 shared synthetic-data generators + env metrics + headless plotting
+│   ├── synthetic_climate.py  synthetic_biodiversity.py  synthetic_remote_sensing.py
+│   ├── synthetic_hydrology.py  synthetic_spatial.py  synthetic_airquality.py
+│   ├── metrics.py  plotting.py  tests/
+├── experiments/            the 9 before/after experiments (each: before/ after/ run_before_after.py results/ tests/ README.md)
+├── autoresearch_env/       env-stats adaptation of the Karpathy-style loop (gates, composite, splits, runner)
+├── skills/                 Claude Code skills: env-autoresearch-setup, climate-data-fetch, env-stats-validate
+├── docs/                   taxonomy, before/after, zero-to-hero, tutorials, guides, glossary, FAQ, talk kit
+└── ledgers/                INSIGHTS, ITEMS, CITATIONS-TO-VERIFY, TODO, CHECKPOINT
+```
+
+## Documentation index
+
+**Start / learn**
+- [GETTING_STARTED.md](docs/GETTING_STARTED.md) — install, first run, no-GPU path, troubleshooting
+- [EXPERIMENTS_INDEX.md](docs/EXPERIMENTS_INDEX.md) — all 9 experiments, run commands, verdicts
+- [TUTORIAL_run_an_experiment.md](docs/TUTORIAL_run_an_experiment.md) — deep Exp01 walkthrough
+- [TUTORIAL_autoresearch.md](docs/TUTORIAL_autoresearch.md) — drive the gated loop yourself
+- [GLOSSARY.md](docs/GLOSSARY.md) — stats ↔ ML bridge terms
+
+**Concepts / framing**
+- [taxonomy.md](docs/taxonomy.md) — environmetrics taxonomy + where AI fits (the talk's anchor map)
+- [before_after.md](docs/before_after.md) — the BEFORE vs AFTER framework
+- [zero_to_hero.md](docs/zero_to_hero.md) — the L1→L4 Claude-Code ladder
+- [autoresearch_protocol.md](docs/autoresearch_protocol.md) — the env-stats autoresearch protocol
+
+**Guides / practice**
+- [GUIDE_using_claude_code_for_envstats.md](docs/GUIDE_using_claude_code_for_envstats.md) — the art of telling the agent what to do
+- [GUIDE_adapt_to_real_data.md](docs/GUIDE_adapt_to_real_data.md) — swap synthetic → ERA5/GBIF/Sentinel-2/CAMELS/OpenAQ/SRTM
+- [CONTRIBUTING.md](CONTRIBUTING.md) — add a new before/after experiment
+- [FAQ.md](docs/FAQ.md) · [ADDENDUM_methodology.md](docs/ADDENDUM_methodology.md) — honest Q&A + methodology/threats-to-validity
+
+**Talk kit** → [docs/talk/](docs/talk/): `outline.md` (16-slide notes), `deck.pptx` (20 slides w/ real figures), `handout.md`, `demo_script.md`.
+
+## The autoresearch loop (flagship)
+
+`autoresearch_env/` adapts the user's own `dlmastery/autoresearch` (`generalized_ml_autoresearch`) to environmental statistics. **Claude Code is the outer-loop researcher**, running the 7-step loop per experiment — **Diagnose → Cite → Hypothesize → Predict → Execute → Analyze → Checkpoint** — behind two hard gates:
+
+- **Citation Rigor** (a real author/year/venue + arXiv/title + relevance note), and
+- **Reasoning Completeness** (a *mechanistic* hypothesis + a *numeric* prediction range).
+
+A frozen composite-metric fingerprint guards against Goodhart-style mid-project rewrites; a champion is archived only when the composite improves; a crash-recovery checkpoint is rewritten after every experiment. [Exp05](experiments/05_autoresearch_climate) ran it for real: a gated 6-experiment loop in ~38 s, champion **+8.0 % skill**, with the gates provably blocking a shallow "just try it" entry (proven by a test) and the agent even *rejecting* an obvious-but-wrong idea. See [docs/TUTORIAL_autoresearch.md](docs/TUTORIAL_autoresearch.md).
+
+## Hardware & reproducibility
+
+- Built and run on **Windows 11, Python 3.12, NVIDIA RTX 4090 Laptop GPU (~16 GB), CUDA 12.4, torch 2.6** — the class of hardware an individual scientist can own.
+- **No GPU or API keys are required** for the committed results: everything runs on synthetic + small data with deterministic seeds. The 4090 only speeds up Exp01/04/08.
+- `pip install -r requirements.txt` (note the **matplotlib ≥ 3.9** and **statsmodels ≥ 0.14.4** pins — earlier versions crash under numpy 2.x).
+- `python run_all_tests.py` runs all 11 components (each in its own process to keep the per-experiment `before`/`after` packages from colliding).
+
+## The honest-results philosophy
+
+"AFTER" means *Claude Code + an AI-for-science model wrote, ran, and benchmarked the workflow.* The headline is the collapse in **human effort** (days of bespoke coding → one command) plus the **rigor gates** a rushed human often skips — **not** "a neural net always wins." So the repo keeps the losses visible: SARIMA beats the LSTM at 1-step (Exp01); RF ties the CNN on easy land cover (Exp04); kriging keeps an uncertainty surface RF lacks (Exp06). The value is that the agent lets you **find out fast, fairly, and reproducibly** — with the human owning the question, assumptions, multiple-testing, uncertainty, and sign-off ([`skills/env-stats-validate`](skills/env-stats-validate)). The "100× faster" claim is defined precisely in [docs/FAQ.md](docs/FAQ.md) (person-time + rigor, not a wall-clock multiplier).
 
 ## Status
 
-✅ **v1 build complete.** All documentation + code + unit tests were written and verified **first** (by a wave of 10 parallel SME agents), then the experiments were run for real on the RTX 4090. Headline numbers live in [`RESULTS.md`](RESULTS.md).
+✅ **v1 complete.** Documentation + code + unit tests were written and verified **first** (by parallel SME agents), then the experiments were run for real. **9 before/after experiments, 11 green test components, a 20-slide deck, 13 docs + tutorials/guides, 3 skills, the autoresearch loop, and web-verified citations.** Progress is checkpointed to this public repo after every unit (power-failure recovery): see [ledgers/CHECKPOINT.md](ledgers/CHECKPOINT.md) and [ledgers/TODO.md](ledgers/TODO.md). Backlog (Exp09 Bayesian, Exp10 SDM, real-data smoke runs, demo recording) is tracked there.
 
-- **All 9 test components green** (`python run_all_tests.py`): `common`, `autoresearch_env`, and experiments 01, 02, 03, 04, 05, 08, 12 (≈115 unit tests).
-- **7 before/after experiments** with committed results; 3 use the RTX 4090. The Exp05 autoresearch loop ran end-to-end (champion +8.0% skill, monotone composite). A real **`docs/talk/deck.pptx`** (18 slides) is generated from the outline.
-- Progress is checkpointed to this public repo after every unit (power-failure recovery). See [`ledgers/CHECKPOINT.md`](ledgers/CHECKPOINT.md) and [`ledgers/TODO.md`](ledgers/TODO.md).
-- **Honest by design:** verdicts are mixed on purpose — clean AFTER wins (hydrology +0.56 NSE, conformal ~7× tighter calibration, hard-mode land cover +0.36 acc), a rigor win (extremes), and ties / classical-wins where deserved (**SARIMA beats the LSTM at 1-step**) — all kept visible in [`RESULTS.md`](RESULTS.md). Citations were **web-verified** (see `ledgers/CITATIONS-TO-VERIFY.md`); unverified performance stats stay flagged.
+## Credits & license
 
-## Credits & licensing
-
-Autoresearch methodology adapted from `dlmastery/autoresearch` (`generalized_ml_autoresearch`). Source-material talk content originates from a research-planning transcript; all factual claims here are independently filtered for verifiability. License: MIT (see `LICENSE` once added).
+Autoresearch methodology adapted from **`dlmastery/autoresearch`** (`generalized_ml_autoresearch`). Source-material talk content originates from a research-planning transcript; all factual claims here are independently filtered for verifiability ([`ledgers/CITATIONS-TO-VERIFY.md`](ledgers/CITATIONS-TO-VERIFY.md)). License: MIT.
