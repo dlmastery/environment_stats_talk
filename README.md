@@ -39,10 +39,12 @@ This repo is the **living proof behind the slides.** Every claim on a slide poin
 | 01 | Climate time-series forecasting | persistence / ARIMA | LSTM/TCN on 4090 (+ foundation-model zero-shot) | RMSE/ACC table + forecast plots |
 | 02 | Climate extremes & trends | hand-coded Mann-Kendall + GEV | Claude-Code pipeline + rigor checklist | return-level plot + trend CIs |
 | 03 | Biodiversity from text | regex/keyword extraction | structured-LLM extraction → interaction network | precision/recall + network graph |
-| 04 | Remote-sensing land cover | Random Forest on spectral indices | CNN on 4090 (+ embeddings) | accuracy/F1 + change map |
+| 04 | Remote-sensing land cover | Random Forest on spectral indices | CNN on 4090 (+ hard-mode texture classes) | accuracy/F1, change map, **hard-mode CNN +0.36 acc** |
 | 05 | **Autoresearch loop (flagship)** | one model, by hand | Claude Code runs N experiments autonomously | champion archive + research journal |
+| 08 | Hydrology: rainfall-runoff streamflow | linear / conceptual bucket | LSTM on 4090 | NSE/KGE + hydrograph (**+0.56 NSE**) |
+| 12 | Uncertainty quantification | normal-theory prediction intervals | split/normalized conformal | coverage + width (**gap ~7× smaller**) |
 
-See [`ledgers/TODO.md`](ledgers/TODO.md) for the full, expanding task list.
+See [`ledgers/TODO.md`](ledgers/TODO.md) for the full, expanding task list. Headline numbers: [`RESULTS.md`](RESULTS.md).
 
 ## Quick start
 
@@ -58,10 +60,10 @@ python experiments/01_climate_timeseries_forecast/run_before_after.py
 
 ✅ **v1 build complete.** All documentation + code + unit tests were written and verified **first** (by a wave of 10 parallel SME agents), then the experiments were run for real on the RTX 4090. Headline numbers live in [`RESULTS.md`](RESULTS.md).
 
-- **75 unit tests green** across 7 components (`python run_all_tests.py`): common 16, autoresearch_env 10, Exp01 13, Exp02 12, Exp03 11, Exp04 8, Exp05 5.
-- All 5 before/after experiments produce committed results; the Exp05 autoresearch loop ran end-to-end (champion +8.0% skill, monotone composite).
+- **All 9 test components green** (`python run_all_tests.py`): `common`, `autoresearch_env`, and experiments 01, 02, 03, 04, 05, 08, 12 (≈115 unit tests).
+- **7 before/after experiments** with committed results; 3 use the RTX 4090. The Exp05 autoresearch loop ran end-to-end (champion +8.0% skill, monotone composite). A real **`docs/talk/deck.pptx`** (18 slides) is generated from the outline.
 - Progress is checkpointed to this public repo after every unit (power-failure recovery). See [`ledgers/CHECKPOINT.md`](ledgers/CHECKPOINT.md) and [`ledgers/TODO.md`](ledgers/TODO.md).
-- Honest by design: in 2 of 5 experiments the classical method wins or ties — kept visible (see `RESULTS.md`).
+- **Honest by design:** verdicts are mixed on purpose — clean AFTER wins (hydrology +0.56 NSE, conformal ~7× tighter calibration, hard-mode land cover +0.36 acc), a rigor win (extremes), and ties / classical-wins where deserved (**SARIMA beats the LSTM at 1-step**) — all kept visible in [`RESULTS.md`](RESULTS.md). Citations were **web-verified** (see `ledgers/CITATIONS-TO-VERIFY.md`); unverified performance stats stay flagged.
 
 ## Credits & licensing
 

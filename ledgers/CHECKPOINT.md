@@ -4,6 +4,18 @@ Append-only log for crash recovery. Newest at top. Pushed to the public repo per
 
 ---
 
+## 2026-05-26 — Wave 3 COMPLETE (backlog expansion + verification)
+- Second parallel SME wave (5 agents) all integrated & pushed:
+  - **deck.pptx** (18 slides, reproducible build_deck.py) — tangible presentation artifact.
+  - **Exp04 hard-mode**: texture-only classes -> genuine CNN win RF 0.642 vs CNN 0.998 (+0.356 acc) on the 4090.
+  - **Exp08 hydrology**: linear NSE 0.142 -> LSTM NSE 0.704 (+0.562) — the clean ML-wins example.
+  - **Exp12 conformal UQ**: normal-theory 80%->86.9% miscalibrated; conformal closes gap 0.033->0.004 (~7x) with narrower bands.
+  - **Citation verification (web)**: all 5 arXiv anchors + Brown&Spillias (MEE 2026 DOI) + Co-Scientist Nature (19 May 2026 DOI) CONFIRMED as real (postdate my Jan-2026 cutoff). Corrections: AI-Scientist-v2 Nature title is 'Towards end-to-end automation of AI research' (workshop peer-review); Aletheia = Gemini 3 Deep Think not 3.5. Round-number performance STATS remain UNVERIFIED/flagged.
+- RESULTS.md + README refreshed: 7 experiments, honest mixed verdicts (3 clean AFTER-wins, 1 rigor win, 1 recall win w/ ceiling, ties where deserved incl SARIMA>LSTM at 1-step). run_all_tests.py now covers 9 components.
+- **NEXT (future sessions):** Exp06 spatial kriging-vs-ML, Exp07 air quality, Exp09 Bayesian-vs-amortized, Exp10 SDM; embed deck figures from results/*.png; optional real-data (ERA5/CAMELS) smoke; record the live-demo backup video.
+
+---
+
 ## 2026-05-26 — Wave 2 COMPLETE (v1 build done)
 - All 5 experiments run for real; results committed & pushed. RESULTS.md scoreboard live.
 - Real headline numbers: Exp01 (4090) LSTM skill +0.06/+0.21/+0.32 at h=1/7/14 — but **SARIMA wins at h>=7** (honest: value = fair fast benchmarking). Exp02 GEV 100-yr 55.8mm[46.7-80.2] + stationarity flag. Exp03 recall 10%->100% (synthetic ceiling). Exp04 (4090) RF=CNN=1.0 on easy synthetic + change map (effort/capability shift). Exp05 flagship: gated 6-experiment loop in ~38s, champion +8.0% skill, gates provably block shallow entries.
