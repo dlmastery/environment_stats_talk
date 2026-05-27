@@ -29,6 +29,8 @@ COMPONENTS = [
     "experiments/03_biodiversity_text_extraction/tests",
     "experiments/04_remote_sensing_landcover/tests",
     "experiments/05_autoresearch_climate/tests",
+    "experiments/06_spatial_interpolation/tests",
+    "experiments/07_air_quality_nowcast/tests",
     "experiments/08_hydrology_streamflow/tests",
     "experiments/12_conformal_uncertainty/tests",
 ]
