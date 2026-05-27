@@ -121,3 +121,46 @@ Status key: ☐ unverified · ☑ verified (record the primary source + correcti
 4. **Prefer the conservative anchor.** If only a preprint is confirmed, cite the preprint and say so; never upgrade a preprint to "Nature."
 5. **If it can't be verified, cut it.** For this audience, an omitted claim costs nothing; a wrong claim costs the whole talk's credibility.
 6. **Log the outcome** here: flip ☐→☑ with the confirmed citation, or ☐→✗ and remove from all build artifacts.
+
+---
+
+## Verification status (web-checked 2026-05-26)
+
+> Status: **CONFIRMED** = resolves to a real primary source matching the claim · **CORRECTED** = real, but the transcript's title/author/date/version was wrong (correction recorded) · **UNVERIFIED** = could not locate a primary source. Numbers (RMSE/BLEU/etc. ranges in §C) were **NOT** independently re-derived in this pass — they remain `[NEEDS-VERIFICATION]`; only identifiers, titles, authors, venues, dates, and existence were checked. Because the project's real "today" is 2026-05-26, several items previously flagged as "future-dated" are now in the past and *are* findable.
+
+### Verified arXiv anchors (titles/authors/years confirmed against arxiv.org/abs/<id>)
+
+- **2502.11059 — CONFIRMED.** "ClimateLLM: Efficient Weather Forecasting via Frequency-Aware Large Language Models," first author **Shixuan Li** (Li, Yang, Zhang, Xiao, Cao, Qin, Zhang, Zhao, Bogdan), submitted **Feb 2025**. ID matches the described ClimateLLM paper. URL: https://arxiv.org/abs/2502.11059
+- **2409.19058 — CONFIRMED (minor title correction).** Exact title is **"CLLMate: A Multimodal Benchmark for Weather and Climate Events Forecasting,"** first author **Haobo Li** (Li, Z. Wang, J. Wang, Y. Wang, Lau, Qu), submitted **Sep 2024**. ID matches CLLMate. (Transcript's "multimodal LLM for WCEF" gist is right; the paper frames itself as a *benchmark/dataset* — 26,156 ERA5-aligned news articles.) EMNLP-2025 acceptance not separately confirmed in this pass. URL: https://arxiv.org/abs/2409.19058
+- **2502.18864 — CONFIRMED.** "Towards an AI co-scientist," first author **Juraj Gottweis** (34 authors incl. Natarajan), submitted **Feb 2025**. ID matches; this is the preprint. URL: https://arxiv.org/abs/2502.18864
+- **2504.08066 — CONFIRMED.** "The AI Scientist-v2: Workshop-Level Automated Scientific Discovery via Agentic Tree Search," first author **Yutaro Yamada** (Yamada, Lange, C. Lu, Hu, C. Lu, Foerster, Clune, Ha), submitted **Apr 2025**. ID matches AI-Scientist-v2. URL: https://arxiv.org/abs/2504.08066
+- **2503.23330 — CONFIRMED.** "EagleVision: Object-level Attribute Multimodal LLM for Remote Sensing," first author **Hongxiang Jiang** (Jiang, Yin, Wang, Feng, Chen); introduces EVAttrs-95K. Submitted **Mar 2025**. ID matches EagleVision. URL: https://arxiv.org/abs/2503.23330
+
+### E1. Brown & Spillias — CONFIRMED (now a journal article, not a preprint)
+
+- **CONFIRMED.** C. J. Brown & Scott Spillias, **"Prompting large language models for quality ecological statistics,"** *Methods in Ecology and Evolution* (2026), **Vol. 17, pp. 1012–1021**, **DOI: 10.1111/2041-210x.70267**. The transcript's "~arXiv:2505.06120" preprint ID was a guess and is NOT how to cite it — use the MEE DOI. The paper's core finding (generic prompt never suggested the appropriate count model for fish-abundance data; a detailed prompt specifying variable types/sample size/design reliably did) directly supports the talk's human-in-the-loop rigor message. URL: https://doi.org/10.1111/2041-210x.70267 (open page: https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210x.70267)
+
+### A1. Co-Scientist *Nature* paper — CONFIRMED (the future-dated claim checks out)
+
+- **CONFIRMED.** "Accelerating scientific discovery with Co-Scientist," Gottweis, J., Weng, W-H., Daryin, A. et al., **Nature**, **DOI: 10.1038/s41586-026-10644-y**, published online **19 May 2026**. Corroborated by Nature's own listing, the Nature Asia press release, and secondary coverage (techxplore 2026-05). The arXiv preprint 2502.18864 remains the conservative anchor; the Nature paper is now real and citeable with the DOI. (Nature article page is behind an auth redirect, but the DOI resolves to it and multiple independent sources confirm title/authors/date.) URLs: https://doi.org/10.1038/s41586-026-10644-y · https://www.nature.com/articles/s41586-026-10644-y
+
+### A2. AI-Scientist-v2 *Nature* paper — CONFIRMED, but with a CORRECTED title
+
+- **CONFIRMED (title corrected).** The Nature paper IS real, but its title is **"Towards end-to-end automation of AI research,"** **Nature 651, 914–919 (2026)**, **DOI: 10.1038/s41586-026-10265-5** (Sakana AI / UBC / Vector Institute / Oxford). It is NOT titled "AI-Scientist-v2" — that is the arXiv preprint (2504.08066). The "first fully AI-generated manuscript to pass peer review" claim refers specifically to a **workshop** acceptance (ICLR workshop, avg reviewer score ~6.33), described in the v2 preprint; phrase it as "first AI-generated paper to pass a *workshop* peer review," not "first peer-reviewed paper" unqualified. URLs: https://www.nature.com/articles/s41586-026-10265-5 · https://sakana.ai/ai-scientist-nature/
+
+### A3. OpenAI "Erdős breakthrough" / arXiv:2605.20695 — CONFIRMED (no longer "do-not-use")
+
+- **CONFIRMED.** arXiv:**2605.20695** resolves to **"Remarks on the disproof of the unit distance conjecture,"** authors **Noga Alon, Thomas F. Bloom, W. T. Gowers, Daniel Litt, Will Sawin, Arul Shankar, Jacob Tsimerman, Victor Wang, Melanie Matchett Wood**, submitted **20 May 2026**. It is a short, human-verified write-up of an OpenAI-model-generated counterexample to the Erdős (1946) unit-distance conjecture; an OpenAI PDF abstract also exists. The named endorsers (Alon/Gowers/Wood et al.) are the actual authors of this companion note. **Still tangential to environmental statistics — safe to omit from the talk on relevance grounds, not on falsity grounds.** URLs: https://arxiv.org/abs/2605.20695 · https://cdn.openai.com/pdf/74c24085-19b0-4534-9c90-465b8e29ad73/unit-distance-proof.pdf
+
+### B. Model versions — mostly CONFIRMED as real releases
+
+- **GPT-5.2 — CONFIRMED.** Released **11 Dec 2025** (instant/thinking/Pro + Codex variant). URL: https://openai.com/index/introducing-gpt-5-2/
+- **GPT-5.4 — CONFIRMED.** Released **5 Mar 2026** (Thinking/Pro, then mini/nano on Mar 17); native computer use, 1M context, tool-search token savings. (Lineup since: GPT-5.5 in API on 24 Apr 2026.) The transcript's "GPT-5.4 Standard/Thinking/Pro" is essentially right. URLs: https://en.wikipedia.org/wiki/GPT-5.4 · https://help.openai.com/en/articles/6825453-chatgpt-release-notes
+- **Claude Opus 4.5 — CONFIRMED.** Released **~24 Nov 2025** (`claude-opus-4-5-20251101`). (Opus 4.7 also now exists, 2026.) URL: https://www.anthropic.com/news/claude-opus-4-5
+- **Gemini Pro 3 / "Gemini 3 Pro" — CONFIRMED.** Gemini 3 Pro released **Nov 2025**; Gemini 3.1 Pro **19 Feb 2026**. URL: https://blog.google/products/gemini/gemini-3/
+- **Gemini 3.5 — CONFIRMED (exists), capability claim CORRECTED.** Gemini 3.5 family announced (3.5 Flash shipped; **3.5 Pro slated June 2026**). BUT the transcript's **"Gemini 3.5 / Deep Think Aletheia"** pairing is wrong: **Aletheia is powered by Gemini 3 *Deep Think* (Gemini 3 line, Jan/Feb 2026 iteration), not Gemini 3.5.** Aletheia's autonomous arithmetic-geometry result is the **"Feng26"** paper computing "eigenweights" (graded "Level A2" autonomy), and it also resolved 4 open Erdős problems. Attribute Aletheia to **Gemini 3 Deep Think**, not "Gemini 3.5." URLs: https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5/ · https://deepmind.google/blog/accelerating-mathematical-and-scientific-discovery-with-gemini-deep-think/
+- **WeatherNext 2 — CONFIRMED (verify specific numbers separately).** Real Google DeepMind release: 8× faster, up to 1-hour resolution, ensembles in <1 min on one TPU, beats WeatherNext on 99.9% of variables/lead-times (0–15 days), Functional Generative Network (FGN); data in Earth Engine/BigQuery, early access on Vertex AI. The transcript's specific impact figures ("operational 15-day cyclone lead, >2B people") were NOT confirmed in this pass — cite the model + the official 0–15-day lead-time figure, not the population claim. URLs: https://blog.google/innovation-and-ai/models-and-research/google-deepmind/weathernext-2/ · https://deepmind.google/science/weathernext/
+
+### Items NOT checked in this pass (remain as previously tagged)
+
+A4–A11 (other future-dated arXiv IDs, BioDT/DestinE specifics, SyncED-Ocean), §C numeric ranges (C1–C5), §D communication-science stats (D1–D3), §E2–E10 (other arXiv IDs / repos), and §F industry/deployment claims were **not** part of this verification request and keep their existing status. §D fabricated effect sizes and §C round-number ranges in particular remain **UNVERIFIED — do not assert**.
