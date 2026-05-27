@@ -1,0 +1,60 @@
+{
+  "experiment": "04_remote_sensing_landcover/hard",
+  "mode": "hard (texture-separable; mean indices blind to texture pairs)",
+  "classes": [
+    "forest_natural",
+    "orchard_rows",
+    "water_smooth",
+    "flooded_field",
+    "bare"
+  ],
+  "bands": [
+    "blue",
+    "green",
+    "red",
+    "nir",
+    "swir"
+  ],
+  "config": {
+    "epochs": 40,
+    "quick": false,
+    "n_train": 3000,
+    "n_test": 1000,
+    "size": 16,
+    "seed": 0,
+    "rf_estimators": 300,
+    "cnn_width": 24,
+    "batch_size": 128,
+    "device": "cuda"
+  },
+  "classification": {
+    "before_rf_indices": {
+      "model": "RandomForest-on-indices",
+      "accuracy": 0.642,
+      "macro_f1": 0.6405479511467973,
+      "feature_importance": {
+        "NDVI": 0.21760249915019286,
+        "NDWI": 0.22751506661409937,
+        "mean_SWIR": 0.25011566006254626,
+        "brightness": 0.3047667741731616
+      }
+    },
+    "after_cnn_bands": {
+      "model": "SmallCNN-on-bands",
+      "device": "cuda",
+      "accuracy": 0.998,
+      "macro_f1": 0.9979945399175076,
+      "n_params": 53741,
+      "best_epoch": 23,
+      "epochs_run": 32
+    },
+    "delta": {
+      "accuracy": 0.356,
+      "macro_f1": 0.35744658877071034
+    }
+  },
+  "artifacts": {
+    "confusion_matrix": "confusion_matrix_hard.png",
+    "before_after_bars": "before_after_hard_bars.png"
+  }
+}

@@ -174,6 +174,64 @@ run — only the data size, patch size, epochs, and batch size grow:
 
 ---
 
+## Hard mode — where the CNN *genuinely* beats RF-on-indices
+
+The default synthetic classes have well-separated mean spectra, so RF-on-indices is
+already near-perfect and the CNN can only tie it — the honest before/after story
+there is *effort*, not *accuracy*. **Hard mode** adds the missing accuracy win by
+making the task **texture-separable**.
+
+`common.synthetic_remote_sensing.multispectral_patches_hard(n, size, seed)` builds
+five classes in which two **pairs share a (near-)identical mean spectrum** and differ
+**only in spatial texture**:
+
+| Class | Base spectrum | Distinguishing spatial pattern |
+|---|---|---|
+| `forest_natural` | forest | isotropic, low-frequency canopy mottle |
+| `orchard_rows` | forest (same NDVI/NDWI) | oriented, periodic planting **rows** |
+| `water_smooth` | water | isotropic wind-ripple texture |
+| `flooded_field` | water (same spectrum) | oriented **rows** from submerged crop rows |
+| `bare` | bare | isotropic mid-frequency texture (spectral anchor) |
+
+The texture is added as a **per-band, zero-mean** spatial field, and within each pair
+the two members are matched in amplitude *and* spatial-correlation magnitude (differing
+only in isotropy vs orientation). So NDVI / NDWI / mean-SWIR / brightness — everything
+`compute_indices()` returns — are **structurally blind** to the pairs, while a CNN reads
+the oriented pattern directly. (We deliberately avoided a smooth-vs-white-speckle pair:
+that leaks an NDVI-*variance* tell a tree ensemble can exploit. See the module note.)
+
+This is verified by `common/tests/test_remote_sensing_hard.py`: a linear classifier on
+`compute_indices()` scores near chance on each texture pair (and the 5-class index
+ceiling is well below the texture ceiling), while simple translation-invariant texture
+statistics — the kind of signal a CNN learns — separate the same pairs near-perfectly.
+
+### Real result (RTX 4090, `after/cnn_hard.py`)
+
+Same two pipelines, run on the **hard** data (`n_train=3000`, `n_test=1000`, `size=16`,
+`seed=0`, RF `n_estimators=300`, CNN `width=24`, 40 epochs with early stopping → stopped
+at epoch 32, best epoch 23, 53,741 params, **device=cuda**):
+
+| Pipeline | Features | Accuracy | Macro-F1 |
+|---|---|---:|---:|
+| BEFORE — RandomForest-on-indices | 4 hand-computed indices | **0.642** | **0.641** |
+| AFTER — SmallCNN-on-bands | raw `(5,16,16)` patches | **0.998** | **0.998** |
+| **Δ (after − before)** | | **+0.356** | **+0.357** |
+
+**Honest win:** on texture-separable land cover the CNN beats RF-on-indices by
+**+0.356 accuracy** and **+0.357 macro-F1**. RF caps at ~0.64 because it cannot resolve
+the two same-spectrum texture pairs (its confusion is *within* `forest_natural↔orchard_rows`
+and `water_smooth↔flooded_field`); the CNN resolves both. Artifacts in
+[`results/hard/`](results/hard/): `metrics.json`, `summary.md`,
+`confusion_matrix_hard.png`, `before_after_hard_bars.png`.
+
+```bash
+# Hard-mode before/after (auto-CUDA on the 4090, CPU fallback)
+python experiments/04_remote_sensing_landcover/after/cnn_hard.py
+python experiments/04_remote_sensing_landcover/after/cnn_hard.py --quick --cpu   # fast smoke
+```
+
+---
+
 ## Files
 
 ```
@@ -181,11 +239,15 @@ run — only the data size, patch size, epochs, and batch size grow:
 ├── before/rf_indices.py        # RandomForest on hand-computed spectral indices
 ├── after/cnn_classifier.py     # SmallCNN on raw 5-band patches (+ embedding_knn_baseline)
 ├── after/change_detect.py      # NDVI-difference change detector
+├── after/cnn_hard.py           # HARD-mode orchestrator: RF-indices vs CNN-bands (honest win)
 ├── run_before_after.py         # orchestrator: metrics.json + 3 PNGs + summary.md
 ├── tests/test_exp04.py         # fast CPU pytest (<30s compute)
-├── results/                    # committed metrics + plots
+├── tests/test_exp04_hard.py    # fast CPU pytest for the hard path
+├── results/                    # committed metrics + plots (default mode)
+├── results/hard/               # committed metrics + plots (hard mode, real 4090 run)
 └── README.md                   # this file
 ```
 
 *Generator + utilities are committed in `common/` (do not modify): `multispectral_patches`,
-`compute_indices`, `change_pair`, `BANDS`, `CLASSES`, `metrics`, `plotting`.*
+`multispectral_patches_hard`, `compute_indices`, `change_pair`, `BANDS`, `CLASSES`,
+`HARD_CLASSES`, `metrics`, `plotting`.*
