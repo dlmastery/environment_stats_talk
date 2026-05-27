@@ -1,0 +1,54 @@
+{
+  "experiment": "08_hydrology_streamflow",
+  "config": {
+    "n_years": 25,
+    "quick": false,
+    "seed": 0,
+    "n_lags": 7,
+    "device": "cuda",
+    "n_train": 6387,
+    "n_val": 1369,
+    "n_test": 1369,
+    "n_eval_targets": 1369,
+    "after_cfg": {
+      "lookback": 45,
+      "hidden": 32,
+      "num_layers": 1,
+      "lr": 0.001,
+      "batch_size": 128,
+      "epochs": 60,
+      "patience": 12
+    }
+  },
+  "before": {
+    "linear": {
+      "rmse": 1.5248888651013341,
+      "nse": 0.14164513017188485,
+      "kge": 0.17549518286705013
+    },
+    "bucket": {
+      "rmse": 1.7375525014097484,
+      "nse": -0.11446481301315026,
+      "kge": 0.17535944278498805
+    }
+  },
+  "after": {
+    "lstm": {
+      "rmse": 0.8953303497188716,
+      "nse": 0.704091730754226,
+      "kge": 0.6839097746314905
+    },
+    "epochs_run": 19,
+    "best_val_nse": 0.7674800286734361,
+    "device": "cuda"
+  },
+  "gains_after_minus_before": {
+    "nse": 0.5624466005823412,
+    "kge": 0.5084145917644404,
+    "rmse": -0.6295585153824625
+  },
+  "wall_time_sec": {
+    "before": 0.129,
+    "after": 20.859
+  }
+}
