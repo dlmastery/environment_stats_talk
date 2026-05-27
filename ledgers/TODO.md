@@ -17,18 +17,18 @@ Rules: **docs + code + unit tests first**, experiment **runs** after everything 
 - ☐ 8. `docs/autoresearch_protocol.md` (env-stats adaptation of the 7-step loop)
 - ☐ 16. `docs/talk/` (slide outline + speaker notes, handout, live-demo script)
 
-## Phase 2 — Code + unit tests (parallel SME agents; NO full runs yet)
-- ☐ 10. Exp01 climate time-series forecasting (before/after) — code + tests
-- ☐ 11. Exp02 extreme value & trend detection (before/after) — code + tests
-- ☐ 12. Exp03 biodiversity text → interactions (before/after) — code + tests
-- ☐ 13. Exp04 remote-sensing land-cover (before/after, 4090) — code + tests
-- ☐ 14. Exp05 autoresearch loop adaptation (`autoresearch_env/`) — code + tests
-- ☐ 15. Skills: env-autoresearch-setup, climate-data-fetch, env-stats-validate
+## Phase 2 — Code + unit tests (parallel SME agents) ✅ DONE (75 tests green)
+- ☑ 10. Exp01 climate time-series forecasting — code + 13 tests
+- ☑ 11. Exp02 extreme value & trend detection — code + 12 tests
+- ☑ 12. Exp03 biodiversity text → interactions — code + 11 tests
+- ☑ 13. Exp04 remote-sensing land-cover (4090) — code + 8 tests
+- ☑ 14. Exp05 autoresearch loop adaptation (`autoresearch_env/`) — code + 10 tests
+- ☑ 15. Skills: env-autoresearch-setup, climate-data-fetch, env-stats-validate
 
-## Phase 3 — Experiment runs (after Phase 1+2 green)
-- ☐ Run Exp01–04, commit real results (metrics, plots, tables)
-- ☐ Run Exp05 autoresearch loop on the 4090 (flagship), commit champion archive + journal
-- ☐ 17. Aggregate `RESULTS.md` "100× faster" scoreboard + final review
+## Phase 3 — Experiment runs ✅ DONE
+- ☑ Ran Exp01–04 on the 4090/CPU; real results committed (metrics, plots, summaries)
+- ☑ Ran Exp05 autoresearch loop (flagship); champion + journal + checkpoint committed
+- ☑ 17. Aggregated `RESULTS.md` scoreboard + README/CHECKPOINT sync + full-suite re-run
 
 ## Backlog (expand — "very very long list")
 - ☐ Exp06 spatial statistics: kriging vs ML interpolation

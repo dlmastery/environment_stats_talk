@@ -28,6 +28,7 @@ COMPONENTS = [
     "experiments/02_extreme_value_trends/tests",
     "experiments/03_biodiversity_text_extraction/tests",
     "experiments/04_remote_sensing_landcover/tests",
+    "experiments/05_autoresearch_climate/tests",
 ]
 
 

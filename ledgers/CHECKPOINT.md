@@ -4,6 +4,15 @@ Append-only log for crash recovery. Newest at top. Pushed to the public repo per
 
 ---
 
+## 2026-05-26 — Wave 2 COMPLETE (v1 build done)
+- All 5 experiments run for real; results committed & pushed. RESULTS.md scoreboard live.
+- Real headline numbers: Exp01 (4090) LSTM skill +0.06/+0.21/+0.32 at h=1/7/14 — but **SARIMA wins at h>=7** (honest: value = fair fast benchmarking). Exp02 GEV 100-yr 55.8mm[46.7-80.2] + stationarity flag. Exp03 recall 10%->100% (synthetic ceiling). Exp04 (4090) RF=CNN=1.0 on easy synthetic + change map (effort/capability shift). Exp05 flagship: gated 6-experiment loop in ~38s, champion +8.0% skill, gates provably block shallow entries.
+- Fixed numpy-2 ABI breaks: matplotlib->3.10.9, statsmodels->0.14.6 (pinned in requirements).
+- Test runner extended to 7 components; full suite green.
+- **NEXT (optional polish / future sessions):** Exp04 texture 'hard mode' so CNN beats RF; backlog experiments (spatial kriging, hydrology/CAMELS, air quality, Bayesian, SDM, conformal UQ); verify the flagged citations in CITATIONS-TO-VERIFY.md before any slide uses them; generate the actual .pptx from docs/talk/outline.md.
+
+---
+
 ## 2026-05-26 — Wave 1 COMPLETE (all docs + code + unit tests built)
 - Public repo live: https://github.com/dlmastery/environment_stats_talk (periodic pushes after each unit).
 - Dispatched **10 parallel SME agents**; all integrated & checkpointed:

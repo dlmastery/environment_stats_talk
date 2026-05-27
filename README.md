@@ -56,7 +56,12 @@ python experiments/01_climate_timeseries_forecast/run_before_after.py
 
 ## Status
 
-🚧 Under active construction by Claude Code (multi-agent build). Documentation and code are written and unit-tested **before** experiments are run. Progress is checkpointed to this public repo periodically (power-failure recovery). See [`ledgers/TODO.md`](ledgers/TODO.md).
+✅ **v1 build complete.** All documentation + code + unit tests were written and verified **first** (by a wave of 10 parallel SME agents), then the experiments were run for real on the RTX 4090. Headline numbers live in [`RESULTS.md`](RESULTS.md).
+
+- **75 unit tests green** across 7 components (`python run_all_tests.py`): common 16, autoresearch_env 10, Exp01 13, Exp02 12, Exp03 11, Exp04 8, Exp05 5.
+- All 5 before/after experiments produce committed results; the Exp05 autoresearch loop ran end-to-end (champion +8.0% skill, monotone composite).
+- Progress is checkpointed to this public repo after every unit (power-failure recovery). See [`ledgers/CHECKPOINT.md`](ledgers/CHECKPOINT.md) and [`ledgers/TODO.md`](ledgers/TODO.md).
+- Honest by design: in 2 of 5 experiments the classical method wins or ties — kept visible (see `RESULTS.md`).
 
 ## Credits & licensing
 
