@@ -1,0 +1,116 @@
+{
+  "elapsed_s": 944.1582622999995,
+  "model": "neuralgcm v1/deterministic_2_8_deg",
+  "input_vars": [
+    "geopotential",
+    "specific_humidity",
+    "temperature",
+    "u_component_of_wind",
+    "v_component_of_wind",
+    "specific_cloud_ice_water_content",
+    "specific_cloud_liquid_water_content"
+  ],
+  "predictions_vars": [
+    "v_component_of_wind",
+    "specific_cloud_liquid_water_content",
+    "specific_humidity",
+    "u_component_of_wind",
+    "sim_time",
+    "geopotential",
+    "temperature",
+    "specific_cloud_ice_water_content"
+  ],
+  "predictions_sizes": {
+    "time": 4,
+    "level": 37,
+    "longitude": 128,
+    "latitude": 64
+  },
+  "stats": {
+    "v_component_of_wind": {
+      "shape": [
+        4,
+        37,
+        128,
+        64
+      ],
+      "min": -64.41433715820312,
+      "max": 67.0238037109375,
+      "mean": 0.018264660611748695
+    },
+    "specific_cloud_liquid_water_content": {
+      "shape": [
+        4,
+        37,
+        128,
+        64
+      ],
+      "min": -0.00024935585679486394,
+      "max": 0.000357151118805632,
+      "mean": 4.024804638902424e-06
+    },
+    "specific_humidity": {
+      "shape": [
+        4,
+        37,
+        128,
+        64
+      ],
+      "min": -0.0005391488084569573,
+      "max": 0.021989978849887848,
+      "mean": 0.001725725014694035
+    },
+    "u_component_of_wind": {
+      "shape": [
+        4,
+        37,
+        128,
+        64
+      ],
+      "min": -67.67977905273438,
+      "max": 101.03125762939453,
+      "mean": 5.900492191314697
+    },
+    "sim_time": {
+      "shape": [
+        4
+      ],
+      "min": 189248.046875,
+      "max": 189285.84375,
+      "mean": 189266.9375
+    },
+    "geopotential": {
+      "shape": [
+        4,
+        37,
+        128,
+        64
+      ],
+      "min": -5714.71435546875,
+      "max": 475235.78125,
+      "mean": 122655.5703125
+    },
+    "temperature": {
+      "shape": [
+        4,
+        37,
+        128,
+        64
+      ],
+      "min": 185.98170471191406,
+      "max": 310.239501953125,
+      "mean": 246.30172729492188
+    },
+    "specific_cloud_ice_water_content": {
+      "shape": [
+        4,
+        37,
+        128,
+        64
+      ],
+      "min": -7.028618711046875e-05,
+      "max": 0.00032213536906056106,
+      "mean": 1.6731225969124353e-06
+    }
+  }
+}

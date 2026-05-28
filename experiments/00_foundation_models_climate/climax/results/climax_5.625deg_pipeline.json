@@ -1,0 +1,57 @@
+{
+  "elapsed_s": 0.9140330000009271,
+  "model": "ClimaX 5.625deg pretrain (HF tungnd/climax)",
+  "device": "cuda",
+  "input_shape": [
+    1,
+    48,
+    32,
+    64
+  ],
+  "output_shape": [
+    1,
+    5,
+    32,
+    64
+  ],
+  "out_vars": [
+    "geopotential_500",
+    "temperature_850",
+    "2m_temperature",
+    "10m_u_component_of_wind",
+    "10m_v_component_of_wind"
+  ],
+  "stats": {
+    "geopotential_500": {
+      "mean": -0.15691043436527252,
+      "std": 1.1352148056030273,
+      "min": -2.182377576828003,
+      "max": 1.296184778213501
+    },
+    "temperature_850": {
+      "mean": -0.03587952256202698,
+      "std": 1.0039654970169067,
+      "min": -2.3699686527252197,
+      "max": 1.288118600845337
+    },
+    "2m_temperature": {
+      "mean": -0.004015505313873291,
+      "std": 0.9354033470153809,
+      "min": -2.5426878929138184,
+      "max": 1.2574766874313354
+    },
+    "10m_u_component_of_wind": {
+      "mean": 0.41747617721557617,
+      "std": 0.4626944363117218,
+      "min": -0.567293643951416,
+      "max": 2.0311076641082764
+    },
+    "10m_v_component_of_wind": {
+      "mean": 0.0001542177051305771,
+      "std": 0.36863309144973755,
+      "min": -1.1796156167984009,
+      "max": 1.59443998336792
+    }
+  },
+  "honest_caveat": "Inputs are SYNTHETIC: a single 32x64 temperature field broadcast across all 48 ClimaX channels. Outputs are the model's transform of this synthetic field in standardized space; NOT a real forecast."
+}

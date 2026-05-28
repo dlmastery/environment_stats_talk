@@ -1,0 +1,222 @@
+{
+  "elapsed_s": 59.33173640000314,
+  "jax_backend": "cpu",
+  "checkpoint": "GraphCast_small - ERA5 1979-2015 - resolution 1.0 - pressure levels 13 - mesh 2to5 - precipitation input and output.npz",
+  "dataset": "source-era5_date-2022-01-01_res-1.0_levels-13_steps-01.nc",
+  "output_variables": [
+    "10m_u_component_of_wind",
+    "10m_v_component_of_wind",
+    "2m_temperature",
+    "geopotential",
+    "mean_sea_level_pressure",
+    "specific_humidity",
+    "temperature",
+    "total_precipitation_6hr",
+    "u_component_of_wind",
+    "v_component_of_wind",
+    "vertical_velocity"
+  ],
+  "output_dims": {
+    "10m_u_component_of_wind": {
+      "time": 1,
+      "batch": 1,
+      "lat": 181,
+      "lon": 360
+    },
+    "10m_v_component_of_wind": {
+      "time": 1,
+      "batch": 1,
+      "lat": 181,
+      "lon": 360
+    },
+    "2m_temperature": {
+      "time": 1,
+      "batch": 1,
+      "lat": 181,
+      "lon": 360
+    },
+    "geopotential": {
+      "time": 1,
+      "batch": 1,
+      "level": 13,
+      "lat": 181,
+      "lon": 360
+    },
+    "mean_sea_level_pressure": {
+      "time": 1,
+      "batch": 1,
+      "lat": 181,
+      "lon": 360
+    },
+    "specific_humidity": {
+      "time": 1,
+      "batch": 1,
+      "level": 13,
+      "lat": 181,
+      "lon": 360
+    },
+    "temperature": {
+      "time": 1,
+      "batch": 1,
+      "level": 13,
+      "lat": 181,
+      "lon": 360
+    },
+    "total_precipitation_6hr": {
+      "time": 1,
+      "batch": 1,
+      "lat": 181,
+      "lon": 360
+    },
+    "u_component_of_wind": {
+      "time": 1,
+      "batch": 1,
+      "level": 13,
+      "lat": 181,
+      "lon": 360
+    },
+    "v_component_of_wind": {
+      "time": 1,
+      "batch": 1,
+      "level": 13,
+      "lat": 181,
+      "lon": 360
+    },
+    "vertical_velocity": {
+      "time": 1,
+      "batch": 1,
+      "level": 13,
+      "lat": 181,
+      "lon": 360
+    }
+  },
+  "stats": {
+    "10m_u_component_of_wind": {
+      "shape": [
+        1,
+        1,
+        181,
+        360
+      ],
+      "min": -28.213573455810547,
+      "max": 19.38199806213379,
+      "mean": -0.2836277186870575
+    },
+    "10m_v_component_of_wind": {
+      "shape": [
+        1,
+        1,
+        181,
+        360
+      ],
+      "min": -20.930253982543945,
+      "max": 22.99648666381836,
+      "mean": -0.2959241271018982
+    },
+    "2m_temperature": {
+      "shape": [
+        1,
+        1,
+        181,
+        360
+      ],
+      "min": 220.5602569580078,
+      "max": 312.3631896972656,
+      "mean": 277.17901611328125
+    },
+    "geopotential": {
+      "shape": [
+        1,
+        1,
+        13,
+        181,
+        360
+      ],
+      "min": -3688.24755859375,
+      "max": 204301.28125,
+      "mean": 77628.734375
+    },
+    "mean_sea_level_pressure": {
+      "shape": [
+        1,
+        1,
+        181,
+        360
+      ],
+      "min": 95410.734375,
+      "max": 104209.234375,
+      "mean": 101087.9453125
+    },
+    "specific_humidity": {
+      "shape": [
+        1,
+        1,
+        13,
+        181,
+        360
+      ],
+      "min": -0.00015906855696812272,
+      "max": 0.021792378276586533,
+      "mean": 0.0016467231325805187
+    },
+    "temperature": {
+      "shape": [
+        1,
+        1,
+        13,
+        181,
+        360
+      ],
+      "min": 184.8168182373047,
+      "max": 315.40802001953125,
+      "mean": 242.53970336914062
+    },
+    "total_precipitation_6hr": {
+      "shape": [
+        1,
+        1,
+        181,
+        360
+      ],
+      "min": -0.0005215420969761908,
+      "max": 0.07734393328428268,
+      "mean": 0.0006786331068724394
+    },
+    "u_component_of_wind": {
+      "shape": [
+        1,
+        1,
+        13,
+        181,
+        360
+      ],
+      "min": -47.8834114074707,
+      "max": 92.75745391845703,
+      "mean": 7.508932590484619
+    },
+    "v_component_of_wind": {
+      "shape": [
+        1,
+        1,
+        13,
+        181,
+        360
+      ],
+      "min": -66.98587799072266,
+      "max": 73.18126678466797,
+      "mean": 0.04228720813989639
+    },
+    "vertical_velocity": {
+      "shape": [
+        1,
+        1,
+        13,
+        181,
+        360
+      ],
+      "min": -5.260246753692627,
+      "max": 5.457249164581299,
+      "mean": 0.0027622452471405268
+    }
+  }
+}

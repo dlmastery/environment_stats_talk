@@ -1,0 +1,76 @@
+{
+  "elapsed_s": 210.27953960000013,
+  "model": "pangu_weather_24.onnx",
+  "input_shapes": {
+    "input_upper": [
+      5,
+      13,
+      721,
+      1440
+    ],
+    "input_surface": [
+      4,
+      721,
+      1440
+    ]
+  },
+  "surface_stats": {
+    "MSLP_Pa": {
+      "input_mean": 101325.0,
+      "output_mean": 100591.2109375,
+      "delta_mean": -733.7937622070312,
+      "delta_abs_max": 2497.890625
+    },
+    "U10_mps": {
+      "input_mean": 0.0,
+      "output_mean": -0.30013689398765564,
+      "delta_mean": -0.30013689398765564,
+      "delta_abs_max": 8.383384704589844
+    },
+    "V10_mps": {
+      "input_mean": 0.0,
+      "output_mean": 0.1963423639535904,
+      "delta_mean": 0.1963423639535904,
+      "delta_abs_max": 8.48973274230957
+    },
+    "T2M_K": {
+      "input_mean": 279.0042419433594,
+      "output_mean": 278.91668701171875,
+      "delta_mean": -0.08756361156702042,
+      "delta_abs_max": 15.18377685546875
+    }
+  },
+  "upper_stats": {
+    "Z_m2s2": {
+      "input_mean": 74863.2421875,
+      "output_mean": 75896.2109375,
+      "delta_mean": 1032.9708251953125,
+      "delta_abs_max": 26334.171875
+    },
+    "Q_kgkg": {
+      "input_mean": 0.0032215381506830454,
+      "output_mean": 0.0018617380410432816,
+      "delta_mean": -0.0013598004588857293,
+      "delta_abs_max": 0.01071980595588684
+    },
+    "T_K": {
+      "input_mean": 245.15403747558594,
+      "output_mean": 244.5924072265625,
+      "delta_mean": -0.5616545677185059,
+      "delta_abs_max": 41.19465637207031
+    },
+    "U_mps": {
+      "input_mean": 0.0,
+      "output_mean": 3.0045828819274902,
+      "delta_mean": 3.0045828819274902,
+      "delta_abs_max": 31.849395751953125
+    },
+    "V_mps": {
+      "input_mean": 0.0,
+      "output_mean": -0.6159858703613281,
+      "delta_mean": -0.6159858703613281,
+      "delta_abs_max": 13.550226211547852
+    }
+  },
+  "honest_caveat": "Inputs are SYNTHETIC climatology built from common.gridded_temperature_field. This is a pipeline / shape smoke test, not a real Pangu forecast."
+}

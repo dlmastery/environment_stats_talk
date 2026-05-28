@@ -1,0 +1,142 @@
+{
+  "n_records": 7747,
+  "n_distinct_events": 1551,
+  "n_distinct_locations": 897,
+  "top_events": [
+    [
+      "heavy rainfall",
+      519
+    ],
+    [
+      "typhoon",
+      315
+    ],
+    [
+      "strong winds",
+      296
+    ],
+    [
+      "heavy rain",
+      210
+    ],
+    [
+      "high temperature",
+      181
+    ],
+    [
+      "flooding",
+      161
+    ],
+    [
+      "heatwave",
+      139
+    ],
+    [
+      "cold air",
+      129
+    ],
+    [
+      "snowfall",
+      112
+    ],
+    [
+      "landslides",
+      110
+    ],
+    [
+      "air pollution",
+      104
+    ],
+    [
+      "rainstorm",
+      95
+    ],
+    [
+      "rainfall",
+      94
+    ],
+    [
+      "temperature drop",
+      94
+    ],
+    [
+      "flight cancellations",
+      91
+    ]
+  ],
+  "top_locations": [
+    [
+      "beijing city",
+      236
+    ],
+    [
+      "shanghai city",
+      208
+    ],
+    [
+      "hong kong",
+      175
+    ],
+    [
+      "zhengzhou city",
+      123
+    ],
+    [
+      "shenzhen city",
+      121
+    ],
+    [
+      "macau",
+      102
+    ],
+    [
+      "chongqing city",
+      92
+    ],
+    [
+      "taiwan",
+      86
+    ],
+    [
+      "hangzhou city",
+      85
+    ],
+    [
+      "jinan city",
+      84
+    ],
+    [
+      "guangzhou city",
+      74
+    ],
+    [
+      "xiamen city",
+      68
+    ],
+    [
+      "zhuhai city",
+      67
+    ],
+    [
+      "tianjin city",
+      66
+    ],
+    [
+      "texas state",
+      63
+    ]
+  ],
+  "records_with_cause": 2218,
+  "records_with_caused_by": 3608,
+  "fields_per_record": [
+    "event",
+    "time",
+    "location",
+    "coordinate",
+    "caused by",
+    "cause",
+    "news_id",
+    "image_path"
+  ],
+  "honest_note": "This is the public CLLMate event dataset only. The paper's benchmark also needs ERA5 raster renderings and a (generic) MLLM. No CLLMate-specific model weights were released."
+}
