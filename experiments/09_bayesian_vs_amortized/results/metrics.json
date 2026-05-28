@@ -1,0 +1,62 @@
+{
+  "experiment": "09_bayesian_vs_amortized",
+  "config": {
+    "n_stations": 30,
+    "quick": false,
+    "seed": 0,
+    "mh_iter": 4000,
+    "mh_burn": 1500,
+    "amortized_train_sims": 4000,
+    "device": "cuda",
+    "generative": {
+      "mu": 0.5,
+      "tau": 1.2,
+      "sigma": 0.7
+    }
+  },
+  "before_closed_form_known_hyper": {
+    "coverage_95": 0.9666666666666667,
+    "rmse_to_truth": 0.15290755449675417,
+    "mean_interval_width": 0.720412717919063
+  },
+  "before_mh": {
+    "coverage_95": 1.0,
+    "rmse_to_truth": 0.15220978262296325,
+    "mean_interval_width": 0.7506758515135165,
+    "mh_accept_rate": {
+      "theta": 0.5284083333333334,
+      "mu": 0.62625,
+      "tau": 0.51625,
+      "sigma": 0.2655
+    },
+    "post_hyper": {
+      "mu_mean": 0.3260739942934332,
+      "tau_mean": 1.0355317424491635,
+      "sigma_mean": 0.735487896687218,
+      "mu_95": [
+        -0.048359128360484865,
+        0.7166913237865846
+      ],
+      "tau_95": [
+        0.7809847862150373,
+        1.3794255480794384
+      ],
+      "sigma_95": [
+        0.6887963961524389,
+        0.784907301607526
+      ]
+    }
+  },
+  "after_amortized": {
+    "coverage_95": 1.0,
+    "rmse_to_truth": 0.265639888834724,
+    "mean_interval_width": 2.3488399982452393
+  },
+  "wall_time_sec": {
+    "before_closed_form": 0.0,
+    "before_mh_fit": 11.6112,
+    "after_amortized_train_once": 24.4593,
+    "after_amortized_score": 0.008
+  },
+  "speedup_score_vs_mh_fit": 1451.63
+}
