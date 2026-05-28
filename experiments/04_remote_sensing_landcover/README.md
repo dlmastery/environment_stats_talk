@@ -232,20 +232,84 @@ python experiments/04_remote_sensing_landcover/after/cnn_hard.py --quick --cpu  
 
 ---
 
+## Foundation encoder — real pretrained ViT, frozen, on HARD mode
+
+Beyond the from-scratch CNN, we also ran a **real pretrained remote-sensing
+foundation encoder** — **NASA-IBM Prithvi-EO-1.0-100M** (Hugging Face id
+[`ibm-nasa-geospatial/Prithvi-EO-1.0-100M`](https://huggingface.co/ibm-nasa-geospatial/Prithvi-EO-1.0-100M),
+Apache-2.0; ViT-B/16, 100 M params, pretrained with a Masked Autoencoder on
+NASA's Harmonized Landsat-Sentinel-2 (HLS) product) — **frozen** as a feature
+extractor, with two cheap supervised heads on top:
+
+- a **linear probe** (multinomial `LogisticRegression` on standardised CLS
+  embeddings — the canonical "is the embedding linearly separable?" protocol),
+- a **kNN(k=5)** head (no training at all, pure nearest-neighbour transfer).
+
+We chose Prithvi over option (1) **EagleVision (arXiv:2503.23330)** — an
+RS-**MLLM** built around captioning/QA, with no clean turn-key embedding
+endpoint released as a Hugging Face model — and over option (3) a generic
+ImageNet `timm` ViT, because Prithvi is the closest *RS-specific* pretrained
+encoder for our spectral domain (we feed 5 bands → 6 by repeating SWIR for
+SWIR1+SWIR2; bilinearly upsample 16×16 patches to 224×224; scale our [0,1]
+reflectance to HLS units ×10000 then apply Prithvi's published per-band mean/std).
+The generic ImageNet fallback is implemented (`run_foundation.py --encoder
+timm`) and documented; it is **not** the headline number.
+
+### Real result (RTX 4090, `run_foundation.py`)
+
+Same HARD-mode data and seeded train/test split as the from-scratch CNN row
+above (`n_train=3000`, `n_test=1000`, `size=16`, `seed=0`, device=cuda, embed
+36.9 s + heads 8.1 s):
+
+| Pipeline | Trainable params on this task | Accuracy | Macro-F1 |
+|---|---|---:|---:|
+| BEFORE — RandomForest on indices | RF only | **0.642** | **0.641** |
+| AFTER — from-scratch SmallCNN | 53,741 | **0.998** | **0.998** |
+| AFTER — Prithvi-EO-100M (frozen) + linear probe | **0** (encoder frozen) | **0.997** | **0.997** |
+| AFTER — Prithvi-EO-100M (frozen) + kNN(k=5)     | **0** (no training) | **0.954** | **0.954** |
+
+Honest verdict — the frozen 100 M-parameter HLS-pretrained encoder, with a tiny
+linear probe on top, **statistically matches** the bespoke from-scratch CNN
+(−0.001 accuracy, −0.001 macro-F1, well inside noise on a 1 000-patch test set)
+and **demolishes** the RF-on-indices baseline (**+0.355 accuracy**, **+0.356
+macro-F1**). The pure kNN head also blows past RF (+0.312 / +0.313) without any
+gradient steps at all, which is the whole foundation-model promise: useful
+features out-of-the-box. Caveats we explicitly preserve: (i) this is *synthetic
+texture-pair* data, not real HLS scenes, and our generator does not model two
+SWIR sub-bands; (ii) the linear-probe and CNN are within 1 patch (out of 1000)
+of each other, so the "tie" is the honest read — neither dominates. Full
+numbers in [`results/hard/foundation_metrics.json`](results/hard/foundation_metrics.json),
+chart in [`results/hard/foundation_comparison.png`](results/hard/foundation_comparison.png).
+
+```bash
+# Real foundation encoder + linear/kNN heads on HARD mode (additive only)
+python experiments/04_remote_sensing_landcover/run_foundation.py            # GPU/CPU auto
+python experiments/04_remote_sensing_landcover/run_foundation.py --quick    # fast smoke
+python experiments/04_remote_sensing_landcover/run_foundation.py --encoder timm  # generic-ImageNet fallback
+```
+
+---
+
 ## Files
 
 ```
 04_remote_sensing_landcover/
-├── before/rf_indices.py        # RandomForest on hand-computed spectral indices
-├── after/cnn_classifier.py     # SmallCNN on raw 5-band patches (+ embedding_knn_baseline)
-├── after/change_detect.py      # NDVI-difference change detector
-├── after/cnn_hard.py           # HARD-mode orchestrator: RF-indices vs CNN-bands (honest win)
-├── run_before_after.py         # orchestrator: metrics.json + 3 PNGs + summary.md
-├── tests/test_exp04.py         # fast CPU pytest (<30s compute)
-├── tests/test_exp04_hard.py    # fast CPU pytest for the hard path
-├── results/                    # committed metrics + plots (default mode)
-├── results/hard/               # committed metrics + plots (hard mode, real 4090 run)
-└── README.md                   # this file
+├── before/rf_indices.py             # RandomForest on hand-computed spectral indices
+├── after/cnn_classifier.py          # SmallCNN on raw 5-band patches (+ embedding_knn_baseline)
+├── after/change_detect.py           # NDVI-difference change detector
+├── after/cnn_hard.py                # HARD-mode orchestrator: RF-indices vs CNN-bands (honest win)
+├── after/foundation_encoder.py      # NASA-IBM Prithvi-EO-100M (frozen) wrapper + timm fallback
+├── run_before_after.py              # orchestrator: metrics.json + 3 PNGs + summary.md
+├── run_foundation.py                # ADDITIVE: foundation_metrics.json + foundation_comparison.png
+├── tests/test_exp04.py              # fast CPU pytest (<30s compute)
+├── tests/test_exp04_hard.py         # fast CPU pytest for the hard path
+├── tests/test_foundation_imports.py # fast offline test of the Prithvi wrapper plumbing
+├── results/                         # committed metrics + plots (default mode)
+├── results/hard/                    # committed metrics + plots (hard mode, real 4090 run)
+│   ├── metrics.json                 # RF-indices vs from-scratch CNN (existing, untouched)
+│   ├── foundation_metrics.json      # Prithvi (frozen) + linear/kNN (NEW, additive)
+│   └── foundation_comparison.png    # 3-way bar chart: RF vs CNN vs frozen-Prithvi heads
+└── README.md                        # this file
 ```
 
 *Generator + utilities are committed in `common/` (do not modify): `multispectral_patches`,
