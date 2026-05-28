@@ -11,6 +11,12 @@ networkx>=3.0
 # Deep learning (GPU experiments; CPU fallback works for smoke tests)
 torch>=2.2            # install the CUDA build matching your GPU for 4090 runs
 
+# Foundation-model add-on (Exp01 zero-shot path).
+# Install with: pip install chronos-forecasting truststore "transformers>=4.40" "safetensors>=0.4.3"
+# truststore is the Windows-friendly fix for the huggingface.co SSL cert chain.
+# chronos-forecasting     # Amazon's Chronos TS foundation model (T5-small ≈ 226 MB)
+# truststore              # uses OS cert store for HF Hub downloads on Windows
+
 # Optional — only needed for the documented "real data" / "foundation model" variants.
 # The committed results do NOT require these; synthetic+small-data paths run without them.
 # xarray>=2024.0      # ERA5 / NetCDF handling

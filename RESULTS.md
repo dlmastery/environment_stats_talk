@@ -10,7 +10,7 @@
 
 | # | Task | BEFORE (traditional) | AFTER (Claude Code + AI-for-science) | What AFTER adds | Honest verdict |
 |---|------|----------------------|--------------------------------------|-----------------|----------------|
-| 01 | Daily temperature forecasting (20 yr, RTX 4090) | persistence RMSE **4.31 °C** at 14-day lead | LSTM RMSE **2.94** (skill **+0.318**); SARIMA RMSE **2.10** | persistence + seasonal-naive + SARIMA + LSTM **all built & skill-scored in one run** | **SARIMA wins at ≥7-day lead** — classical beats the net here; the win is *fair, fast comparison* |
+| 01 | Daily temperature forecasting (20 yr, RTX 4090) | persistence RMSE **4.31 °C** at 14-day lead | LSTM RMSE **2.94** (skill **+0.318**); SARIMA RMSE **2.10**; **Chronos-T5 zero-shot (real)** RMSE **4.51** | persistence + seasonal-naive + SARIMA + LSTM + Chronos foundation model **all built & skill-scored** | **SARIMA wins at ≥7-day lead; zero-shot Chronos ≈ persistence on this seasonal series.** The win is *fair, fast comparison* — Chronos ran 548 × 3-horizon forecasts in **~9 s on the 4090** |
 | 02 | Precipitation extremes & trend (40 yr) | empirical 100-yr return level **48.6 mm** (point estimate, no CI, no checks) | GEV 100-yr **55.8 mm [46.7–80.2]** + Mann-Kendall trend **p=0.0011** | bootstrap CIs, multi-index trends, **a `validate()` gate that flags its own stationarity violation** | **Rigor win** — same question, far more honest uncertainty; empirical method was biased low |
 | 03 | Species interactions from citizen text | keyword/regex: precision **0.67**, recall **0.10**, F1 **0.18** | structured extraction: P/R/F1 **1.00** on the closed synthetic corpus | passive-voice & synonym handling → an interaction network | **Recall 10% → 100%** (synthetic ceiling — *not* a real-world number; real data needs human verification) |
 | 04 | Land cover + change (RTX 4090) | RF on NDVI/NDWI indices | CNN on raw 5-band cube + change map | learns texture indices average away | **Two regimes, both honest:** easy classes → RF = CNN = **1.00** (tie, effort/capability shift); **hard mode** (texture-only classes) → RF **0.642** vs CNN **0.998** (**+0.356 acc**, a real win) |
@@ -23,6 +23,10 @@
 | 12 | Uncertainty: prediction intervals | normal-theory PIs: 80% nominal → **86.9%** empirical (miscalibrated under heavy tails) | split/normalized **conformal** PIs | distribution-free finite-sample marginal coverage | **Calibration + sharpness win** — mean gap **0.033 → 0.004 (~7×)** *and* narrower bands (6.37→5.22 °C at 80%) |
 
 Artifacts for each row live in `experiments/NN_*/results/` (metrics JSON, plots, `summary.md`).
+
+### Real SOTA foundation models — yes, run for real
+
+The Exp01 row above includes an **actual zero-shot run of Amazon's Chronos-T5-small** (a published TS foundation model, arXiv:2403.07815) on the 4090 — no fine-tuning, no synthetic stand-in. The honest finding: on this strongly-seasonal synthetic series **Chronos ≈ persistence** (skill −0.025 / −0.027 / −0.067 at h = 1/7/14) and **SARIMA still wins**. That is the point: the agent loaded a real foundation model, ran 548 × 3-horizon forecasts in ~9 s on the 4090, and the data told the truth. To beat SARIMA here you would likely fine-tune Chronos on this distribution or use a larger variant — both one command away. Reproduce with `python experiments/01_climate_timeseries_forecast/run_chronos.py` (needs `pip install chronos-forecasting truststore` on Windows).
 
 ---
 

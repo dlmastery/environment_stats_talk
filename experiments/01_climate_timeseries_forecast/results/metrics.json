@@ -54,8 +54,16 @@
       "skill_score_after_vs_persistence": 0.058461740463451095,
       "n_eval_targets": 1095,
       "foundation_zero_shot": {
-        "status": "skipped",
-        "reason": "Chronos/TimesFM not installed or disabled - see after/dl_forecaster.zero_shot_foundation_baseline."
+        "status": "ok",
+        "model": "amazon/chronos-t5-small",
+        "mode": "t5",
+        "rmse": 1.9228207066124832,
+        "mae": 1.5251361558037082,
+        "acc": 0.9607184812068615,
+        "skill_vs_persistence": -0.025227333567996668,
+        "n_eval_targets": 548,
+        "wall_time_sec": 3.83,
+        "lookback": 96
       }
     },
     "7": {
@@ -87,8 +95,16 @@
       "skill_score_after_vs_persistence": 0.21487219189228657,
       "n_eval_targets": 1095,
       "foundation_zero_shot": {
-        "status": "skipped",
-        "reason": "Chronos/TimesFM not installed or disabled - see after/dl_forecaster.zero_shot_foundation_baseline."
+        "status": "ok",
+        "model": "amazon/chronos-t5-small",
+        "mode": "t5",
+        "rmse": 3.6040551806868084,
+        "mae": 2.8780265219890286,
+        "acc": 0.8605070183016096,
+        "skill_vs_persistence": -0.02687737061337403,
+        "n_eval_targets": 548,
+        "wall_time_sec": 1.84,
+        "lookback": 96
       }
     },
     "14": {
@@ -120,8 +136,16 @@
       "skill_score_after_vs_persistence": 0.31825522706960374,
       "n_eval_targets": 1095,
       "foundation_zero_shot": {
-        "status": "skipped",
-        "reason": "Chronos/TimesFM not installed or disabled - see after/dl_forecaster.zero_shot_foundation_baseline."
+        "status": "ok",
+        "model": "amazon/chronos-t5-small",
+        "mode": "t5",
+        "rmse": 4.513765318473139,
+        "mae": 3.510276408091079,
+        "acc": 0.7813968080896718,
+        "skill_vs_persistence": -0.06681930811737868,
+        "n_eval_targets": 548,
+        "wall_time_sec": 3.41,
+        "lookback": 96
       }
     }
   },
