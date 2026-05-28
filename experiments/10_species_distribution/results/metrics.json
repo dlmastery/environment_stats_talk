@@ -1,0 +1,82 @@
+{
+  "experiment": "10_species_distribution",
+  "config": {
+    "n_pres": 800,
+    "n_bg": 4000,
+    "quick": false,
+    "seed": 0,
+    "train_frac": 0.7,
+    "gbm_n_estimators": 300,
+    "gbm_max_depth": 3,
+    "gbm_learning_rate": 0.05,
+    "n_train": 3360,
+    "n_test": 1440,
+    "prevalence_train": 0.1705357142857143,
+    "prevalence_test": 0.15763888888888888,
+    "grid_shape": [
+      60,
+      60
+    ],
+    "covariates": [
+      "temperature",
+      "precipitation",
+      "elevation"
+    ],
+    "before_features": [
+      "temperature",
+      "precipitation",
+      "elevation",
+      "temperature^2",
+      "precipitation^2"
+    ],
+    "after_features": [
+      "temperature",
+      "precipitation",
+      "elevation"
+    ]
+  },
+  "before_glm": {
+    "metrics": {
+      "auc": 0.7050310331177297,
+      "brier": 0.12432479404062134,
+      "suitability_corr": 0.6963527998287378,
+      "mean_predicted_prevalence": 0.1707672539276506,
+      "prevalence_calibration_gap": 0.013128365038761719
+    },
+    "coefficients": {
+      "temperature": 3.5233326654472363,
+      "precipitation": 2.7329989343901224,
+      "elevation": -0.11260256363178192,
+      "temperature^2": -2.976245064021365,
+      "precipitation^2": -2.116630819265778,
+      "intercept": -1.9211066068959113
+    }
+  },
+  "after_gbm": {
+    "metrics": {
+      "auc": 0.7276639634502872,
+      "brier": 0.12240730680743168,
+      "suitability_corr": 0.883919005506389,
+      "mean_predicted_prevalence": 0.1716131046936426,
+      "prevalence_calibration_gap": 0.01397421580475372
+    },
+    "feature_importances": {
+      "temperature": 0.4004552150631051,
+      "precipitation": 0.3271468976419804,
+      "elevation": 0.2723978872949145
+    },
+    "n_estimators": 300,
+    "max_depth": 3,
+    "learning_rate": 0.05
+  },
+  "margins_after_minus_before": {
+    "auc": 0.02263293033255742,
+    "brier": -0.0019174872331896575,
+    "suitability_corr": 0.18756620567765125
+  },
+  "wall_time_sec": {
+    "before": 0.0325,
+    "after": 8.2216
+  },
+  "notes": "AUC: higher is better (1 = perfect ranking, 0.5 = random). Brier: lower is better (0 = perfect probability). suitability_corr: Pearson correlation between predicted P(presence) and the TRUE noise-free suitability on the evaluation grid."
+}
