@@ -9,7 +9,7 @@
     "learning": "The persistence floor is set and the RMSE composite is frozen; axis open for a learned model that can add seasonal-shape and trend corrections. Next try: a tiny 1-hidden-layer MLP on 7 lags plus a sin/cos day-of-year encoding, which should beat this floor by a small margin if the seasonal residual is learnable, per the Gardner & Dorling atmospheric MLP review I will cite next.",
     "_manual": true,
     "_needs_rewrite": false,
-    "authored_at": "2026-05-27T22:24:37.138576"
+    "authored_at": "2026-05-27T22:39:40.582581"
   },
   "2": {
     "experiment_num": 2,
@@ -21,7 +21,7 @@
     "learning": "A learned baseline beats persistence but only slightly — honest modest delta. Axis open on feature design: the 7-lag window may be longer than the true AR(1) memory horizon and add variance. Next try: shrink the lag window to 3 to cut redundant inputs and tighten out-of-sample extrapolation on the future test years.",
     "_manual": true,
     "_needs_rewrite": false,
-    "authored_at": "2026-05-27T22:24:37.138576"
+    "authored_at": "2026-05-27T22:39:40.582581"
   },
   "3": {
     "experiment_num": 3,
@@ -33,7 +33,7 @@
     "learning": "Fewer lags generalise better — the variance-reduction mechanism is confirmed and that feature axis is now closed for this series. Axis open on optimisation: the numpy MLP may be under-fit at learning rate 0.05. Next try: raise the learning rate to 0.08 at the same epoch budget and attribute any gain to optimisation alone.",
     "_manual": true,
     "_needs_rewrite": false,
-    "authored_at": "2026-05-27T22:24:37.138576"
+    "authored_at": "2026-05-27T22:39:40.582581"
   },
   "4": {
     "experiment_num": 4,
@@ -45,7 +45,7 @@
     "learning": "Step size helped only marginally, so the learning-rate axis is nearly closed. The training loss is still drifting at 400 epochs, which points to under-convergence. Axis open on budget. Next try: raise epochs from 400 to 1500 to let the small net fully converge before considering a larger recurrent backbone.",
     "_manual": true,
     "_needs_rewrite": false,
-    "authored_at": "2026-05-27T22:24:37.138576"
+    "authored_at": "2026-05-27T22:39:40.582581"
   },
   "5": {
     "experiment_num": 5,
@@ -57,7 +57,7 @@
     "learning": "Full convergence gave the largest single gain since Exp2, confirming the model was simply under-trained; the epoch axis is now closed on this architecture. Axis open on robustness: every champion so far was chosen on year-blocked folds only. Next try: stress-test this champion on a super-fold-by-regime split to expose any worst-regime collapse.",
     "_manual": true,
     "_needs_rewrite": false,
-    "authored_at": "2026-05-27T22:24:37.138576"
+    "authored_at": "2026-05-27T22:39:40.582581"
   },
   "6": {
     "experiment_num": 6,
@@ -69,6 +69,6 @@
     "learning": "The champion survives the worst-regime stress test without any regime falling below the acceptance threshold, so no penalty fired and the robustness axis is closed for the CPU demo. Axis open for scale-up. Next try: on the 4090, swap the numpy MLP for a torch LSTM or a TimesFM zero-shot backbone to attack any regime whose memory exceeds a 3-lag window.",
     "_manual": true,
     "_needs_rewrite": false,
-    "authored_at": "2026-05-27T22:24:37.138576"
+    "authored_at": "2026-05-27T22:39:40.582581"
   }
 }

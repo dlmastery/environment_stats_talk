@@ -1,6 +1,6 @@
 # Env-Stats AutoResearch — Crash-Recovery Checkpoint
 
-_Last updated: 2026-05-27T22:25:29_  
+_Last updated: 2026-05-27T22:40:09_  
 Driver: Claude Code (outer loop). Hardware: CPU smoke / RTX 4090 for full runs.
 
 ## Current champion
@@ -12,7 +12,7 @@ Driver: Claude Code (outer loop). Hardware: CPU smoke / RTX 4090 for full runs.
 - Exp6 (mlp) — **DISCARD**
 - composite=-1.9622, val=1.9622, test=1.8228
 - per-fold test rmse: [1.8228]
-- elapsed: 10.15s
+- elapsed: 3.85s
 
 ## Exact next command
 ```bash
