@@ -708,6 +708,71 @@ def build():
         ],
     )
 
+    # ----- Slide: Exp09 Bayesian vs amortized (bonus demo) -----
+    build_content_slide(
+        prs,
+        number=None,
+        title="Bonus demo: Bayesian hierarchical — MCMC vs amortized — Exp09",
+        bullets=[
+            "Task: posterior inference for a partial-pooling hierarchical model on many datasets",
+            "BEFORE: from-scratch Metropolis-Hastings — 11.6 s per new dataset (re-run every time)",
+            "AFTER: small MLP amortized over simulations — scores a new dataset in 0.008 s",
+            "Train-once cost 24.5 s pays back from the 2nd dataset onward",
+            "Coverage parity at ≥95% nominal; amortized intervals are wider — honest sharpness/speed tradeoff",
+        ],
+        takeaway="~1451× faster at scoring; same coverage; honest about wider intervals.",
+        visual=(
+            "Posterior-interval comparison (MCMC vs amortized) across datasets, "
+            "plus a BEFORE/AFTER timing bar."
+        ),
+        notes=(
+            "Bayesian hierarchical inference is the cell where amortization changes "
+            "the economics. BEFORE we re-ran an honest Metropolis-Hastings sampler "
+            "for every new dataset — about 11.6 seconds each, fine for one, painful "
+            "for thousands. AFTER, a small MLP trained once over simulations scores a "
+            "new dataset in 0.008 seconds, roughly 1451× faster, and the 24.5-second "
+            "training cost pays back by the second dataset. Coverage matches at the "
+            "nominal 95%, and I'm explicit that the amortized intervals are wider — "
+            "you're trading a little sharpness for enormous speed."
+        ),
+        images=[
+            "experiments/09_bayesian_vs_amortized/results/posterior_intervals.png",
+            "experiments/09_bayesian_vs_amortized/results/before_after_bars.png",
+        ],
+    )
+
+    # ----- Slide: Exp10 species distribution modeling (bonus demo) -----
+    build_content_slide(
+        prs,
+        number=None,
+        title="Bonus demo: Species distribution modeling — Exp10",
+        bullets=[
+            "Task: predict species presence from climate + elevation covariates",
+            "BEFORE: logistic GLM with squared terms — AUC 0.705, Brier 0.124, suit-corr 0.696",
+            "AFTER: calibrated gradient boosting on the same covariates — AUC 0.728, Brier 0.122, suit-corr 0.884",
+            "GBM recovers the elevation × climate interaction the GLM can't encode (+0.188 surface corr)",
+            "Honest caveat: GLM still safer for extrapolation outside the training envelope",
+        ],
+        takeaway="AFTER wins on all 3 metrics; the surface gain dwarfs the AUC gain.",
+        visual=(
+            "Predicted suitability map (BEFORE GLM vs AFTER GBM) over the synthetic "
+            "landscape, with the true-suitability surface for reference."
+        ),
+        notes=(
+            "Species distribution modeling is a cell where AFTER wins cleanly on every "
+            "metric — modestly on AUC (+0.023) and Brier (−0.002), but dramatically on "
+            "true-suitability correlation (+0.188). That last number is the one that "
+            "matters scientifically: the gradient boosting model recovers the elevation "
+            "by climate interaction that defines the niche, which a logistic GLM with "
+            "squared terms structurally can't encode. I keep the GLM as the safer choice "
+            "for extrapolation, because nothing about boosting saves you outside the "
+            "training envelope."
+        ),
+        images=[
+            "experiments/10_species_distribution/results/suitability_map.png",
+        ],
+    )
+
     # ----- Section divider: Flagship -----
     build_section_divider(
         prs,
