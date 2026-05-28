@@ -34,6 +34,8 @@ The experiments are grouped by the **taxonomy branch** they demonstrate (see
 | 06 | Spatial interpolation | IDW 4.94 → kriging 2.91 → **RF + covariate 2.20** | no | **AFTER win with a caveat** — −0.70 RMSE (~24%), but kriging keeps a variance surface |
 | 07 | PM2.5 air-quality nowcast | persistence/ARIMA 17.4 → **GBM + weather 12.1** | no | **Clean AFTER win** — −5.3 RMSE, +0.30 skill, spike-F1 0.74→0.85 |
 | 08 | Rainfall-runoff streamflow | linear/bucket NSE 0.14 → **LSTM NSE 0.70** | auto-CUDA (optional) | **Clean AFTER win** — +0.56 NSE / +0.51 KGE (the classic LSTM-hydrology result) |
+| 09 | Bayesian hierarchical (MCMC vs amortized) | MH **11.6 s/dataset** → amortized **0.008 s** (train-once 24.5 s) | no | **~1451× faster at scoring**, coverage parity, wider intervals — honest speed/sharpness tradeoff |
+| 10 | Species distribution modeling | GLM AUC **0.71** → GBM **0.73**; suit-corr **0.70 → 0.88** | no | **AFTER win on all 3 metrics** (biggest gain on the niche-interaction surface); GLM still safer for extrapolation |
 | 12 | Conformal prediction intervals | normal-theory gap 0.033 → **conformal 0.004 (~7×)** | no (CPU only) | **Calibration + sharpness win** — distribution-free coverage, narrower bands |
 
 ---
@@ -311,6 +313,26 @@ The experiments are grouped by the **taxonomy branch** they demonstrate (see
 - **Credit:** methodology adapted from the user's own `dlmastery/autoresearch`
   (`generalized_ml_autoresearch`); runnable package `autoresearch_env/`; full protocol
   in `docs/autoresearch_protocol.md`.
+
+---
+
+## Taxonomy Branch 1 — Core statistical methods (continued)
+
+### Exp 09 — Bayesian hierarchical: MCMC vs amortized inference
+- **What:** partial-pooling of S stations' offsets in a Normal-Normal hierarchy. BEFORE: closed-form conjugate update + from-scratch Metropolis-Hastings posterior. AFTER: a small MLP trained on simulated datasets to output a per-station posterior (mean, log-std) instantly at scoring time.
+- **Headline (full run, S=30):** MH **11.6 s/dataset**, coverage 1.00, RMSE-to-truth 0.15; amortized **0.008 s** at scoring (train-once 24.5 s) — **~1451× speedup at scoring**, coverage parity, intervals wider (RMSE 0.27).
+- **Honest tradeoff:** classical is interpretable and correct for *any* dataset; amortized pays for the speed in conservatism and must be retrained if the model class changes — the one-time training cost is paid back from the 2nd dataset onward.
+- **Run:** `python experiments/09_bayesian_vs_amortized/run_before_after.py --quick` (CPU, no keys).
+- **Artifacts:** `results/{metrics.json, posterior_intervals.png, before_after_bars.png, summary.md}`.
+
+## Taxonomy Branch 2 — Application domains (continued)
+
+### Exp 10 — Species distribution modeling (SDM)
+- **What:** presence/background SDM with three climate covariates (T, P, elevation) on a 2D grid; the true niche is a Gaussian in (T, P) with an elevation interaction the GLM cannot encode. BEFORE: logistic GLM with linear + squared terms (classical SDM). AFTER: calibrated GradientBoosting on the same covariates.
+- **Headline:** AUC 0.705 → **0.728** (+0.023); Brier 0.124 → **0.122**; true-suitability correlation 0.696 → **0.884** (**+0.188** — the GBM recovers the interaction).
+- **Honest caveats:** GLM is more interpretable and extrapolates more safely outside the training climate; GBM is sensitive to the background-sample choice and can over-extrapolate. AUC alone hides niche-shape quality — keep the suitability-correlation metric in view.
+- **Run:** `python experiments/10_species_distribution/run_before_after.py --quick` (CPU, no keys). Real-data swap: iNaturalist/GBIF presences + ERA5/SRTM covariates.
+- **Artifacts:** `results/{metrics.json, suitability_map.png, before_after_bars.png, summary.md}`.
 
 ---
 

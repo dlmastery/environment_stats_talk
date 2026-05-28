@@ -17,6 +17,8 @@ from .synthetic_remote_sensing import (
 from .synthetic_hydrology import synthetic_catchment
 from .synthetic_spatial import synthetic_spatial_field
 from .synthetic_airquality import synthetic_pm25
+from .synthetic_bayesian import synthetic_station_offsets
+from .synthetic_sdm import synthetic_sdm_dataset
 
 __all__ = [
     "metrics", "plotting",
@@ -27,8 +29,9 @@ __all__ = [
     # remote sensing (incl. texture-separable hard mode)
     "multispectral_patches", "compute_indices", "change_pair", "BANDS", "CLASSES",
     "multispectral_patches_hard", "HARD_CLASSES",
-    # hydrology / spatial / air quality
+    # hydrology / spatial / air quality / bayesian / SDM
     "synthetic_catchment", "synthetic_spatial_field", "synthetic_pm25",
+    "synthetic_station_offsets", "synthetic_sdm_dataset",
 ]
 
 __version__ = "0.1.0"

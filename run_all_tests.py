@@ -32,6 +32,8 @@ COMPONENTS = [
     "experiments/06_spatial_interpolation/tests",
     "experiments/07_air_quality_nowcast/tests",
     "experiments/08_hydrology_streamflow/tests",
+    "experiments/09_bayesian_vs_amortized/tests",
+    "experiments/10_species_distribution/tests",
     "experiments/12_conformal_uncertainty/tests",
 ]
 

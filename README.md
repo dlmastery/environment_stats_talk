@@ -3,7 +3,7 @@
 ### From Data to Discovery — transforming Environmental Statistics with Claude Code & AI-for-Science
 **Companion repository for the talk at the International Environment Statistics Institute conference, Mexico City, 7–11 December 2026 — session _"Modern Approaches to Environmental Statistics."_**
 
-[![tests](https://img.shields.io/badge/tests-11%20components%20green-brightgreen)](run_all_tests.py) [![experiments](https://img.shields.io/badge/before%2Fafter%20experiments-9-blue)](RESULTS.md) [![hardware](https://img.shields.io/badge/runs%20on-CPU%20or%20RTX%204090-orange)](#hardware--reproducibility) [![rigor](https://img.shields.io/badge/claims-web--verified-success)](ledgers/CITATIONS-TO-VERIFY.md)
+[![tests](https://img.shields.io/badge/tests-13%20components%20green-brightgreen)](run_all_tests.py) [![experiments](https://img.shields.io/badge/before%2Fafter%20experiments-11-blue)](RESULTS.md) [![hardware](https://img.shields.io/badge/runs%20on-CPU%20or%20RTX%204090-orange)](#hardware--reproducibility) [![rigor](https://img.shields.io/badge/claims-web--verified-success)](ledgers/CITATIONS-TO-VERIFY.md)
 
 ---
 
@@ -17,7 +17,7 @@ This repo is the **living proof behind the slides.** Every claim on a slide poin
 
 - [Why this is credible (and different)](#why-this-is-credible-and-different)
 - [Quickstart](#quickstart)
-- [The 9 before/after experiments](#the-9-beforeafter-experiments)
+- [The 11 before/after experiments](#the-11-beforeafter-experiments)
 - [Repository map](#repository-map)
 - [Documentation index](#documentation-index)
 - [The autoresearch loop (flagship)](#the-autoresearch-loop-flagship)
@@ -40,12 +40,12 @@ This repo is the **living proof behind the slides.** Every claim on a slide poin
 ```bash
 pip install -r requirements.txt          # numpy/pandas/sklearn/scipy/statsmodels/matplotlib/torch
 python experiments/01_climate_timeseries_forecast/run_before_after.py --quick   # first before/after in minutes
-python run_all_tests.py                   # all 11 test components (CPU)
+python run_all_tests.py                   # all 13 test components (CPU)
 ```
 
 New here? Start with **[docs/GETTING_STARTED.md](docs/GETTING_STARTED.md)** → then **[docs/EXPERIMENTS_INDEX.md](docs/EXPERIMENTS_INDEX.md)**.
 
-## The 9 before/after experiments
+## The 11 before/after experiments
 
 Full numbers and honest verdicts in **[RESULTS.md](RESULTS.md)**. Each row is self-contained under `experiments/`.
 
@@ -59,6 +59,8 @@ Full numbers and honest verdicts in **[RESULTS.md](RESULTS.md)**. Each row is se
 | [06](experiments/06_spatial_interpolation) | Spatial interpolation | kriging → RF + covariate | **2.91 → 2.20 RMSE** (kriging keeps a variance surface) | — |
 | [07](experiments/07_air_quality_nowcast) | Air-quality PM2.5 | persistence/ARIMA → GBM + weather | **17.4 → 12.1 RMSE**, spike-F1 0.74 → 0.85 | — |
 | [08](experiments/08_hydrology_streamflow) | Hydrology streamflow | linear/bucket → LSTM | **NSE 0.14 → 0.70** (+0.56) | 4090 |
+| [09](experiments/09_bayesian_vs_amortized) | Bayesian: hierarchical inference | MCMC (from-scratch MH) → amortized MLP | **~1451× faster at scoring**, coverage parity, wider intervals (honest tradeoff) | — |
+| [10](experiments/10_species_distribution) | Species distribution modeling | logistic GLM → calibrated GBM | AUC 0.71 → 0.73; **suit-corr 0.70 → 0.88** (+0.19) | — |
 | [12](experiments/12_conformal_uncertainty) | Uncertainty quantification | normal-theory PIs → conformal | calibration gap **0.033 → 0.004 (~7×)**, narrower bands | — |
 
 ## Repository map
@@ -70,12 +72,12 @@ environment_stats_talk/
 ├── RESULTS.md              the before/after scoreboard (real numbers)
 ├── CONTRIBUTING.md         the before/after experiment contract (how to add one)
 ├── requirements.txt        deps (+ numpy-2 ABI pins)
-├── run_all_tests.py        runs all 11 test components (one subprocess each)
+├── run_all_tests.py        runs all 13 test components (one subprocess each)
 ├── common/                 shared synthetic-data generators + env metrics + headless plotting
 │   ├── synthetic_climate.py  synthetic_biodiversity.py  synthetic_remote_sensing.py
 │   ├── synthetic_hydrology.py  synthetic_spatial.py  synthetic_airquality.py
 │   ├── metrics.py  plotting.py  tests/
-├── experiments/            the 9 before/after experiments (each: before/ after/ run_before_after.py results/ tests/ README.md)
+├── experiments/            the 11 before/after experiments (each: before/ after/ run_before_after.py results/ tests/ README.md)
 ├── autoresearch_env/       env-stats adaptation of the Karpathy-style loop (gates, composite, splits, runner)
 ├── skills/                 Claude Code skills: env-autoresearch-setup, climate-data-fetch, env-stats-validate
 ├── docs/                   taxonomy, before/after, zero-to-hero, tutorials, guides, glossary, FAQ, talk kit
@@ -127,7 +129,7 @@ A frozen composite-metric fingerprint guards against Goodhart-style mid-project 
 
 ## Status
 
-✅ **v1 complete.** Documentation + code + unit tests were written and verified **first** (by parallel SME agents), then the experiments were run for real. **9 before/after experiments, 11 green test components, a 20-slide deck, 13 docs + tutorials/guides, 3 skills, the autoresearch loop, and web-verified citations.** Progress is checkpointed to this public repo after every unit (power-failure recovery): see [ledgers/CHECKPOINT.md](ledgers/CHECKPOINT.md) and [ledgers/TODO.md](ledgers/TODO.md). Backlog (Exp09 Bayesian, Exp10 SDM, real-data smoke runs, demo recording) is tracked there.
+✅ **v1++ complete.** Documentation + code + unit tests were written and verified **first** (by 5 waves of parallel SME agents), then the experiments were run for real. **11 before/after experiments, 13 green test components, a 20-slide deck (real charts embedded), a presenter demo-walkthrough, 14+ docs + tutorials/guides, 3 skills, the autoresearch loop, and web-verified citations.** Progress is checkpointed to this public repo after every unit (power-failure recovery): see [ledgers/CHECKPOINT.md](ledgers/CHECKPOINT.md) and [ledgers/TODO.md](ledgers/TODO.md).
 
 ## Credits & license
 

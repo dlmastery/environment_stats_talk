@@ -4,6 +4,15 @@ Append-only log for crash recovery. Newest at top. Pushed to the public repo per
 
 ---
 
+## 2026-05-26 — Wave 5 COMPLETE (11 experiments + presenter walkthrough)
+- Added Exp09 (Bayesian hierarchical: MH 11.6s/dataset -> amortized 0.008s scoring, ~1451x speedup, coverage parity) and Exp10 (SDM: GLM AUC 0.71 -> GBM 0.73, suit-corr 0.70 -> 0.88).
+- Built docs/talk/demo_walkthrough.md with REAL captured stdout for the 5 live-demo experiments (presenter backup).
+- common/__init__ exports synthetic_station_offsets + synthetic_sdm_dataset. run_all_tests covers 13 components; full suite green.
+- RESULTS.md + README + EXPERIMENTS_INDEX refreshed to span all 11 experiments; honest mixed-verdict framing intact.
+- One regression caught & fixed: the demowalk agent's --quick re-runs had overwritten Exp01/02/03/12 full-run results; restored from origin/master before commit.
+
+---
+
 ## 2026-05-26 — Wave 4 COMPLETE (heavy docs + README overhaul + 9 experiments)
 - Added Exp06 (spatial kriging 2.91 -> RF+cov 2.20) and Exp07 (air quality ARIMA 17.4 -> GBM+weather 12.1). 9 experiments total; **11 test components green**.
 - common/__init__ exports all generators (climate/biodiversity/remote-sensing+hard/hydrology/spatial/airquality). deck.pptx now 20 slides with 12 real result figures embedded.
