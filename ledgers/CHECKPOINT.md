@@ -4,6 +4,38 @@ Append-only log for crash recovery. Newest at top. Pushed to the public repo per
 
 ---
 
+## 2026-05-28 — Wave 6 COMPLETE (REAL domain-specific foundation models)
+
+Closed the "did you actually run the SOTA foundation models from the transcript?" gap end-to-end:
+
+- **Generic TS foundations on Exp01 (4090, zero-shot, 548×3 forecasts each):**
+  - **TimesFM-2.0-500m (Google)** RMSE 1.82/3.20/3.83 (skill +0.031/+0.087/+0.094) — only clean win.
+  - Chronos-Bolt-small (Amazon) ~ persistence.
+  - MOMENT-1-small (AutonLab): random-init forecast head — unusable zero-shot.
+  - Moirai-1.0-R-small (Salesforce): underperforms on this seasonal series.
+  - **SARIMA still beats every foundation here** — exact "AFTER ≠ always wins" data point.
+
+- **Domain-specific weather FMs (`experiments/00_foundation_models_climate/`, 5 of 7 RAN):**
+  - GraphCast (small): REAL ERA5 6-hr forecast (60s CPU, bundled 1° example).
+  - NeuralGCM (2.8°): REAL 4-day forecast on public ARCO-ERA5 (944s CPU, no CDS key).
+  - ClimaX (5.625°): full pipeline on synthetic in 0.91s on 4090 (exact grid match for `common.gridded_temperature_field` — best "hello world").
+  - FourCastNet: 3.35s on 4090, 75M params (pipeline test on synthetic).
+  - Pangu-Weather (24h): 210s CPU ONNX pipeline.
+  - CLLMate: dataset/benchmark only — no released model (honestly logged).
+  - WeatherNext/2: service-only (BigQuery/EE/Vertex AI) — documented.
+  - ClimateLLM (arXiv:2502.11059): arXiv + OpenReview + GitHub searched -> NO public code/weights -> logged `{status: not_available}` in metrics.json (never fabricated).
+
+- **Domain-specific RS foundation on Exp04:**
+  - NASA-IBM **Prithvi-EO-100M** (ViT-B/16, MAE on HLS), frozen + linear probe = 0.997 acc (matches from-scratch CNN with **0 gradient steps**); embedding 4000 patches in 32.8s on 4090.
+  - EagleVision (arXiv:2503.23330): no clean embedding endpoint in the public repo — documented honestly.
+
+- New docs: `docs/FOUNDATION_MODELS.md` — definitive runnability matrix + per-model section.
+- RESULTS.md + README updated with the foundation-models story; CHECKPOINT logged.
+- Solved real install friction: truststore (HF SSL on Windows); transformers 4.57->5.9; safetensors 0.4->0.7; h5py numpy-2 ABI; jax/jaxlib==0.4.30 + chex<0.1.86 + optax<0.2.4 for GraphCast; gcsfs SSL -> fsspec HTTPS workaround for ARCO-ERA5; ClimaX API-drift patches.
+- 1 borderline-large file: experiments/00_foundation_models_climate/fourcastnet/results/fcn_forecast.npy 79MB (under GitHub hard limit; kept for reproducibility).
+
+---
+
 ## 2026-05-26 — Wave 5 COMPLETE (11 experiments + presenter walkthrough)
 - Added Exp09 (Bayesian hierarchical: MH 11.6s/dataset -> amortized 0.008s scoring, ~1451x speedup, coverage parity) and Exp10 (SDM: GLM AUC 0.71 -> GBM 0.73, suit-corr 0.70 -> 0.88).
 - Built docs/talk/demo_walkthrough.md with REAL captured stdout for the 5 live-demo experiments (presenter backup).

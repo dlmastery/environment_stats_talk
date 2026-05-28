@@ -62,6 +62,7 @@ Full numbers and honest verdicts in **[RESULTS.md](RESULTS.md)**. Each row is se
 | [09](experiments/09_bayesian_vs_amortized) | Bayesian: hierarchical inference | MCMC (from-scratch MH) → amortized MLP | **~1451× faster at scoring**, coverage parity, wider intervals (honest tradeoff) | — |
 | [10](experiments/10_species_distribution) | Species distribution modeling | logistic GLM → calibrated GBM | AUC 0.71 → 0.73; **suit-corr 0.70 → 0.88** (+0.19) | — |
 | [12](experiments/12_conformal_uncertainty) | Uncertainty quantification | normal-theory PIs → conformal | calibration gap **0.033 → 0.004 (~7×)**, narrower bands | — |
+| [00](experiments/00_foundation_models_climate) | **Domain-specific weather foundations** | the talk's anchors, actually run | GraphCast (real ERA5 6-hr) · NeuralGCM (real ARCO-ERA5 4-day) · Pangu · FourCastNet · ClimaX — see [`docs/FOUNDATION_MODELS.md`](docs/FOUNDATION_MODELS.md) | 4090 / CPU |
 
 ## Repository map
 
@@ -94,6 +95,7 @@ environment_stats_talk/
 - [GLOSSARY.md](docs/GLOSSARY.md) — stats ↔ ML bridge terms
 
 **Concepts / framing**
+- [FOUNDATION_MODELS.md](docs/FOUNDATION_MODELS.md) — runnability matrix for the SOTA foundation models the transcript anchors on (TimesFM, Chronos, MOMENT, Moirai, GraphCast, NeuralGCM, Pangu, FourCastNet, ClimaX, CLLMate, WeatherNext, ClimateLLM, Prithvi, EagleVision) — what we actually ran, what we couldn't, why
 - [taxonomy.md](docs/taxonomy.md) — environmetrics taxonomy + where AI fits (the talk's anchor map)
 - [before_after.md](docs/before_after.md) — the BEFORE vs AFTER framework
 - [zero_to_hero.md](docs/zero_to_hero.md) — the L1→L4 Claude-Code ladder

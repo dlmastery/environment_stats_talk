@@ -24,9 +24,25 @@
 
 Artifacts for each row live in `experiments/NN_*/results/` (metrics JSON, plots, `summary.md`).
 
-### Real SOTA foundation models — yes, run for real
+### Real SOTA foundation models — yes, actually run
 
-The Exp01 row above includes an **actual zero-shot run of Amazon's Chronos-T5-small** (a published TS foundation model, arXiv:2403.07815) on the 4090 — no fine-tuning, no synthetic stand-in. The honest finding: on this strongly-seasonal synthetic series **Chronos ≈ persistence** (skill −0.025 / −0.027 / −0.067 at h = 1/7/14) and **SARIMA still wins**. That is the point: the agent loaded a real foundation model, ran 548 × 3-horizon forecasts in ~9 s on the 4090, and the data told the truth. To beat SARIMA here you would likely fine-tune Chronos on this distribution or use a larger variant — both one command away. Reproduce with `python experiments/01_climate_timeseries_forecast/run_chronos.py` (needs `pip install chronos-forecasting truststore` on Windows).
+Beyond the table above, we **actually ran** the domain-specific climate/RS foundation models the talk anchors on. See [`docs/FOUNDATION_MODELS.md`](docs/FOUNDATION_MODELS.md) for the full runnability matrix; the headline:
+
+**Generic TS foundation models on Exp01 (zero-shot, RTX 4090, 548×3 forecasts):**
+
+| Model | h=1 RMSE | h=7 | h=14 | h=14 skill vs persistence | Verdict |
+|---|---:|---:|---:|---:|---|
+| **TimesFM-2.0-500m** (Google) | **1.82** | **3.20** | **3.83** | **+0.094** | only clean foundation winner |
+| Chronos-Bolt-small (Amazon) | 1.82 | 3.42 | 4.25 | −0.004 | ≈ persistence |
+| MOMENT-1-small (AutonLab) | 8.75 | 8.75 | 8.74 | −1.07 | random-init forecast head — not a zero-shot forecaster |
+| Moirai-1.0-R-small (Salesforce) | 6.77 | 9.11 | 6.18 | −0.46 | underperforms on this seasonal series |
+| _Reference: SARIMA_ | _1.83_ | _2.05_ | _2.10_ | _+0.51_ | **still beats every foundation model here** |
+
+**Domain-specific weather foundation models (`experiments/00_foundation_models_climate/`):** 5 of 7 actually run on this 4090 box. **GraphCast** produced a real 6-hr ERA5 forecast (60 s CPU); **NeuralGCM** produced a real 4-day forecast on public ARCO-ERA5 (944 s CPU) — both *without a CDS API key*. **ClimaX** runs end-to-end on our synthetic 32×64 grid in **0.91 s on the 4090** (perfect "hello world"). **FourCastNet** (3.35 s) and **Pangu-Weather** (210 s) load and run their forward pass on synthetic inputs. **CLLMate** turned out to be a benchmark dataset, not a released model. **WeatherNext / 2** is service-only (BigQuery / Earth Engine / Vertex AI) — documented honestly.
+
+**Real RS foundation encoder on Exp04 hard-mode (`experiments/04_remote_sensing_landcover/run_foundation.py`):** NASA-IBM **Prithvi-EO-100M** (ViT-B/16, MAE-pretrained on HLS), frozen, gives **0.997 accuracy** with just a linear probe — matching the from-scratch CNN (0.998) with **zero gradient steps on the task**. Embedding 4000 patches in 32.8 s on the 4090.
+
+The honest meta-finding: **the agent loaded, ran, and benchmarked a dozen real SOTA foundation models in one session on a laptop GPU — and the data told the truth in every case.** Some win, most don't beat a well-fit classical baseline on this synthetic data, one (ClimateLLM) turned out to have no public release. That is exactly what "AI proposes, the human decides" looks like in practice.
 
 ---
 
