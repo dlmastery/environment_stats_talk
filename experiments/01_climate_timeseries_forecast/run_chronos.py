@@ -66,11 +66,22 @@ def main(argv: list[str] | None = None) -> int:
     metrics = json.loads(metrics_path.read_text(encoding="utf-8")) if metrics_path.exists() else {}
     h_block = metrics.setdefault("horizons", {})
     for h_str, vals in result["horizons"].items():
-        h_block.setdefault(h_str, {})["foundation_zero_shot"] = {
+        h_blob = h_block.setdefault(h_str, {})
+        fz = h_blob.get("foundation_zero_shot")
+        # If a legacy flat-dict blob is still here (from before run_all_foundation
+        # was added), migrate it under the model's short name to avoid clobber.
+        if isinstance(fz, dict) and "model" in fz and not any(
+            isinstance(v, dict) for v in fz.values()
+        ):
+            fz = {"chronos_t5_small": dict(fz)}
+        if not isinstance(fz, dict):
+            fz = {}
+        fz["chronos_t5_small"] = {
             "status": "ok",
             "model": result["model"], "mode": result["mode"],
             **vals,
         }
+        h_blob["foundation_zero_shot"] = fz
     metrics_path.write_text(json.dumps(metrics, indent=2), encoding="utf-8")
     print(f"[run_chronos] merged into {metrics_path}")
 
@@ -93,7 +104,10 @@ def main(argv: list[str] | None = None) -> int:
             elif m == "after":
                 rmse_by_method[m].append(h_blob.get("after", {}).get("rmse"))
             else:
-                rmse_by_method[m].append(h_blob.get("foundation_zero_shot", {}).get("rmse"))
+                fz = h_blob.get("foundation_zero_shot", {}) or {}
+                # new nested layout: {short_name: {rmse: ...}}; old flat: {rmse: ...}
+                blob = fz.get("chronos_t5_small", fz)
+                rmse_by_method[m].append(blob.get("rmse"))
 
     fig, ax = plotting.new_fig(7.5, 4.2)
     x = np.arange(len(horizons))
@@ -124,8 +138,10 @@ def main(argv: list[str] | None = None) -> int:
         p = (b.get("before", {}).get("persistence") or {}).get("rmse")
         s = (b.get("before", {}).get("sarima") or {}).get("rmse")
         l = (b.get("after") or {}).get("rmse")
-        c = (b.get("foundation_zero_shot") or {}).get("rmse")
-        sk = (b.get("foundation_zero_shot") or {}).get("skill_vs_persistence")
+        fz = b.get("foundation_zero_shot") or {}
+        blob = fz.get("chronos_t5_small", fz)
+        c = blob.get("rmse")
+        sk = blob.get("skill_vs_persistence")
         def fmt(x): return "—" if x is None else f"{x:.3f}"
         lines.append(f"| {h} | {fmt(p)} | {fmt(s)} | {fmt(l)} | {fmt(c)} | {fmt(sk)} |")
     lines += [

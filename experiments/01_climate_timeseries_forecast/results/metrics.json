@@ -54,16 +54,62 @@
       "skill_score_after_vs_persistence": 0.058461740463451095,
       "n_eval_targets": 1095,
       "foundation_zero_shot": {
-        "status": "ok",
-        "model": "amazon/chronos-t5-small",
-        "mode": "t5",
-        "rmse": 1.9228207066124832,
-        "mae": 1.5251361558037082,
-        "acc": 0.9607184812068615,
-        "skill_vs_persistence": -0.025227333567996668,
-        "n_eval_targets": 548,
-        "wall_time_sec": 3.83,
-        "lookback": 96
+        "chronos_t5_small": {
+          "status": "ok",
+          "model": "amazon/chronos-bolt-small",
+          "mode": "bolt",
+          "device": null,
+          "rmse": 1.8233471324970727,
+          "mae": 1.4489123551514898,
+          "acc": 0.9651880187465112,
+          "skill_vs_persistence": 0.02781090697107491,
+          "n_eval_targets": 548,
+          "wall_time_sec": 1.2,
+          "lookback": 96
+        },
+        "timesfm": {
+          "status": "ok",
+          "model": "google/timesfm-2.0-500m-pytorch",
+          "mode": "transformers",
+          "device": "cuda",
+          "rmse": 1.8169605355713696,
+          "mae": 1.4531660976201077,
+          "acc": 0.9645398037146572,
+          "skill_vs_persistence": 0.031216171806321857,
+          "n_eval_targets": 548,
+          "wall_time_sec": 3.0,
+          "lookback": 512
+        },
+        "moment": {
+          "status": "ok",
+          "model": "AutonLab/MOMENT-1-small",
+          "mode": "reconstruction",
+          "device": "cuda",
+          "rmse": 8.754215962664981,
+          "mae": 6.993610123648261,
+          "acc": -0.1147680901359576,
+          "skill_vs_persistence": -3.667653857698032,
+          "n_eval_targets": 548,
+          "wall_time_sec": 0.42,
+          "lookback": 512
+        },
+        "moirai": {
+          "status": "ok",
+          "model": "Salesforce/moirai-1.0-R-small",
+          "mode": "moirai",
+          "device": "cuda",
+          "rmse": 6.766335915666559,
+          "mae": 5.317590507277607,
+          "acc": 0.4373200915898336,
+          "skill_vs_persistence": -2.6077375831184324,
+          "n_eval_targets": 548,
+          "wall_time_sec": 2.39,
+          "lookback": 192
+        },
+        "climatellm": {
+          "status": "not_available",
+          "reason": "ClimateLLM (arXiv:2502.11059) has no public code or pretrained weights release. Paper only references google-research/weatherbench2 as the data source; no model GitHub or HF repo is published. Skipping."
+        }
       }
     },
     "7": {
@@ -95,16 +141,62 @@
       "skill_score_after_vs_persistence": 0.21487219189228657,
       "n_eval_targets": 1095,
       "foundation_zero_shot": {
-        "status": "ok",
-        "model": "amazon/chronos-t5-small",
-        "mode": "t5",
-        "rmse": 3.6040551806868084,
-        "mae": 2.8780265219890286,
-        "acc": 0.8605070183016096,
-        "skill_vs_persistence": -0.02687737061337403,
-        "n_eval_targets": 548,
-        "wall_time_sec": 1.84,
-        "lookback": 96
+        "chronos_t5_small": {
+          "status": "ok",
+          "model": "amazon/chronos-bolt-small",
+          "mode": "bolt",
+          "device": null,
+          "rmse": 3.419942132933345,
+          "mae": 2.664444346497529,
+          "acc": 0.875431233863177,
+          "skill_vs_persistence": 0.025580628194697086,
+          "n_eval_targets": 548,
+          "wall_time_sec": 0.71,
+          "lookback": 96
+        },
+        "timesfm": {
+          "status": "ok",
+          "model": "google/timesfm-2.0-500m-pytorch",
+          "mode": "transformers",
+          "device": "cuda",
+          "rmse": 3.20366933216268,
+          "mae": 2.554670416525681,
+          "acc": 0.8850530575536484,
+          "skill_vs_persistence": 0.087201672783767,
+          "n_eval_targets": 548,
+          "wall_time_sec": 2.94,
+          "lookback": 512
+        },
+        "moment": {
+          "status": "ok",
+          "model": "AutonLab/MOMENT-1-small",
+          "mode": "reconstruction",
+          "device": "cuda",
+          "rmse": 8.754215962664981,
+          "mae": 6.993610123648261,
+          "acc": -0.1147680901359576,
+          "skill_vs_persistence": -1.4942754255527113,
+          "n_eval_targets": 548,
+          "wall_time_sec": 0.36,
+          "lookback": 512
+        },
+        "moirai": {
+          "status": "ok",
+          "model": "Salesforce/moirai-1.0-R-small",
+          "mode": "moirai",
+          "device": "cuda",
+          "rmse": 9.113532736871548,
+          "mae": 7.37274228656379,
+          "acc": 0.263393457255541,
+          "skill_vs_persistence": -1.5966529547014758,
+          "n_eval_targets": 548,
+          "wall_time_sec": 1.85,
+          "lookback": 192
+        },
+        "climatellm": {
+          "status": "not_available",
+          "reason": "ClimateLLM (arXiv:2502.11059) has no public code or pretrained weights release. Paper only references google-research/weatherbench2 as the data source; no model GitHub or HF repo is published. Skipping."
+        }
       }
     },
     "14": {
@@ -136,16 +228,62 @@
       "skill_score_after_vs_persistence": 0.31825522706960374,
       "n_eval_targets": 1095,
       "foundation_zero_shot": {
-        "status": "ok",
-        "model": "amazon/chronos-t5-small",
-        "mode": "t5",
-        "rmse": 4.513765318473139,
-        "mae": 3.510276408091079,
-        "acc": 0.7813968080896718,
-        "skill_vs_persistence": -0.06681930811737868,
-        "n_eval_targets": 548,
-        "wall_time_sec": 3.41,
-        "lookback": 96
+        "chronos_t5_small": {
+          "status": "ok",
+          "model": "amazon/chronos-bolt-small",
+          "mode": "bolt",
+          "device": null,
+          "rmse": 4.247905651332218,
+          "mae": 3.2214854703332385,
+          "acc": 0.8078735754700188,
+          "skill_vs_persistence": -0.003983913243208681,
+          "n_eval_targets": 548,
+          "wall_time_sec": 0.73,
+          "lookback": 96
+        },
+        "timesfm": {
+          "status": "ok",
+          "model": "google/timesfm-2.0-500m-pytorch",
+          "mode": "transformers",
+          "device": "cuda",
+          "rmse": 3.831411848042403,
+          "mae": 3.0169499016156163,
+          "acc": 0.8306222471085176,
+          "skill_vs_persistence": 0.09445355519192833,
+          "n_eval_targets": 548,
+          "wall_time_sec": 3.16,
+          "lookback": 512
+        },
+        "moment": {
+          "status": "ok",
+          "model": "AutonLab/MOMENT-1-small",
+          "mode": "reconstruction",
+          "device": "cuda",
+          "rmse": 8.740248669241979,
+          "mae": 6.973195818218872,
+          "acc": -0.12264456787477353,
+          "skill_vs_persistence": -1.0657401039291665,
+          "n_eval_targets": 548,
+          "wall_time_sec": 0.35,
+          "lookback": 512
+        },
+        "moirai": {
+          "status": "ok",
+          "model": "Salesforce/moirai-1.0-R-small",
+          "mode": "moirai",
+          "device": "cuda",
+          "rmse": 6.178120008101791,
+          "mae": 4.946564737027579,
+          "acc": 0.5467742122724869,
+          "skill_vs_persistence": -0.4601861743974738,
+          "n_eval_targets": 548,
+          "wall_time_sec": 2.34,
+          "lookback": 192
+        },
+        "climatellm": {
+          "status": "not_available",
+          "reason": "ClimateLLM (arXiv:2502.11059) has no public code or pretrained weights release. Paper only references google-research/weatherbench2 as the data source; no model GitHub or HF repo is published. Skipping."
+        }
       }
     }
   },
